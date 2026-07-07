@@ -1,0 +1,251 @@
+{
+  "metrics": [
+    { "id": "active-events", "icon": "calendar", "value": "4,832", "label": "Active Events" },
+    { "id": "live-today", "icon": "play", "value": "12", "label": "Live Today" },
+    { "id": "this-week", "icon": "flame", "value": "146", "label": "This Week" },
+    { "id": "categories", "icon": "grid", "value": "18", "label": "Categories" }
+  ],
+  "timeline": [
+    { "id": "today", "label": "Today", "count": "12 Events", "kind": "circle", "value": "24", "sub": "OCT", "dots": ["violet"], "grow": 1 },
+    { "id": "tomorrow", "label": "Tomorrow", "count": "8 Events", "kind": "number", "value": "25", "dots": ["emerald", "emerald"], "grow": 1 },
+    {
+      "id": "weekend",
+      "label": "Weekend",
+      "count": "24 Events",
+      "kind": "days",
+      "days": [
+        { "label": "SAT", "num": "26" },
+        { "label": "SUN", "num": "27" }
+      ],
+      "dots": ["orange", "emerald", "sky", "emerald"],
+      "grow": 1.3
+    },
+    {
+      "id": "this-week",
+      "label": "This Week",
+      "count": "46 Events",
+      "kind": "days",
+      "days": [
+        { "label": "MON", "num": "28" },
+        { "label": "TUE", "num": "29" },
+        { "label": "WED", "num": "30" },
+        { "label": "THU", "num": "31" },
+        { "label": "FRI", "num": "1" }
+      ],
+      "dots": ["orange", "emerald", "sky", "violet", "amber", "rose", "sky", "emerald"],
+      "grow": 2.2
+    },
+    { "id": "next-week", "label": "Next Week", "count": "38 Events", "kind": "number", "value": "2–8", "dots": ["emerald", "sky", "violet"], "grow": 1 },
+    { "id": "this-month", "label": "This Month", "count": "146 Events", "kind": "number", "value": "OCT", "dots": ["orange", "violet", "emerald"], "grow": 1 },
+    { "id": "upcoming", "label": "Upcoming", "count": "412 Events", "kind": "number", "value": "NOV+", "dots": ["sky", "violet", "rose"], "grow": 1 },
+    { "id": "past", "label": "Past", "count": "4,126 Events", "kind": "icon", "dots": ["indigo"], "grow": 1 }
+  ],
+  "statusFilters": [
+    { "id": "all", "label": "All" },
+    { "id": "live", "label": "Live", "dot": "emerald" },
+    { "id": "upcoming", "label": "Upcoming", "dot": "sky" },
+    { "id": "completed", "label": "Completed", "dot": "slate" }
+  ],
+  "categoryFilters": [
+    { "id": "politics", "label": "Politics", "emoji": "🏛️" },
+    { "id": "sports", "label": "Sports", "emoji": "⚽" },
+    { "id": "movies", "label": "Movies", "emoji": "🎬" },
+    { "id": "finance", "label": "Finance", "emoji": "💰" },
+    { "id": "tech", "label": "Tech", "emoji": "💻" },
+    { "id": "business", "label": "Business", "emoji": "💼" },
+    { "id": "entertainment", "label": "Entertainment", "emoji": "🎭" },
+    { "id": "govt", "label": "Govt.", "emoji": "🏦" },
+    { "id": "more", "label": "More", "more": true }
+  ],
+  "featured": [
+    {
+      "id": "ind-vs-aus-odi",
+      "title": "India vs Australia ODI",
+      "emoji": "🏏",
+      "accent": "emerald",
+      "badge": { "label": "LIVE", "live": true },
+      "delta": { "direction": "up", "value": 12 },
+      "type": { "emoji": "🏏", "label": "International Cricket" },
+      "meta": "Today · 2:00 PM · Ahmedabad",
+      "markets": 6,
+      "traders": "82K",
+      "mostPopular": {
+        "question": "Will India win the match?",
+        "probability": 74,
+        "delta": { "direction": "up", "value": 8 },
+        "tone": "emerald"
+      },
+      "entities": [
+        { "name": "Virat Kohli", "emoji": "🏏", "accent": "emerald" },
+        { "name": "BCCI", "emoji": "🏛️", "accent": "indigo" },
+        { "name": "ICC", "emoji": "🏆", "accent": "amber" }
+      ],
+      "moreEntities": 3
+    },
+    {
+      "id": "rbi-mpc-meeting",
+      "title": "RBI MPC Meeting",
+      "emoji": "🏦",
+      "accent": "indigo",
+      "badge": { "label": "TOMORROW" },
+      "delta": { "direction": "up", "value": 6 },
+      "type": { "emoji": "🏛️", "label": "Monetary Policy" },
+      "meta": "Tomorrow · 10:30 AM · Mumbai",
+      "markets": 4,
+      "traders": "28K",
+      "mostPopular": {
+        "question": "Will repo rate be cut?",
+        "probability": 27,
+        "delta": { "direction": "down", "value": 4 },
+        "tone": "red"
+      },
+      "entities": [
+        { "name": "RBI", "emoji": "🏦", "accent": "indigo" },
+        { "name": "Inflation", "emoji": "📈", "accent": "rose" },
+        { "name": "Repo Rate", "emoji": "💰", "accent": "amber" }
+      ],
+      "moreEntities": 2
+    },
+    {
+      "id": "war-3-release",
+      "title": "War 3 Release",
+      "emoji": "🎬",
+      "accent": "rose",
+      "badge": { "label": "27 OCT" },
+      "delta": { "direction": "up", "value": 18 },
+      "type": { "emoji": "🎬", "label": "Film Release" },
+      "meta": "27 Oct · 10:00 AM · Nationwide",
+      "markets": 5,
+      "traders": "45K",
+      "mostPopular": {
+        "question": "Will War 3 gross ₹500 cr?",
+        "probability": 68,
+        "delta": { "direction": "up", "value": 11 },
+        "tone": "emerald"
+      },
+      "entities": [
+        { "name": "Hrithik Roshan", "emoji": "🎬", "accent": "rose" },
+        { "name": "YRF", "emoji": "🎥", "accent": "violet" },
+        { "name": "Bollywood", "emoji": "🎭", "accent": "orange" }
+      ],
+      "moreEntities": 2
+    },
+    {
+      "id": "delhi-assembly-elections",
+      "title": "Delhi Assembly Elections",
+      "emoji": "🗳️",
+      "accent": "violet",
+      "badge": { "label": "30 OCT" },
+      "delta": { "direction": "up", "value": 9 },
+      "type": { "emoji": "🗳️", "label": "Election" },
+      "meta": "30 Oct – 5 Feb '25 · Delhi",
+      "markets": 12,
+      "traders": "105K",
+      "mostPopular": {
+        "question": "Which party will win Delhi?",
+        "probability": 53,
+        "delta": { "direction": "down", "value": 5 },
+        "tone": "amber"
+      },
+      "entities": [
+        { "name": "BJP", "emoji": "🪷", "accent": "orange" },
+        { "name": "AAP", "emoji": "🧹", "accent": "sky" },
+        { "name": "Congress", "emoji": "🖐️", "accent": "emerald" }
+      ],
+      "moreEntities": 1
+    }
+  ],
+  "liveNow": [
+    { "id": "ind-aus-live", "title": "India vs Australia ODI", "emoji": "🏏", "accent": "emerald", "traders": "82K Traders" },
+    { "id": "ipl-auction-live", "title": "IPL Auction 2025", "emoji": "🏆", "accent": "amber", "traders": "35K Traders" },
+    { "id": "lok-sabha-live", "title": "Lok Sabha Counting", "emoji": "🗳️", "accent": "violet", "traders": "112K Traders" },
+    { "id": "sensex-live", "title": "Sensex Live Trading", "emoji": "📈", "accent": "emerald", "traders": "18K Traders" }
+  ],
+  "startingSoon": [
+    {
+      "id": "csk-vs-mi",
+      "title": "CSK vs MI Match",
+      "tiles": [
+        { "emoji": "🦁", "accent": "amber" },
+        { "emoji": "🏏", "accent": "sky" }
+      ],
+      "countdown": "45m 12s",
+      "time": "7:30 PM",
+      "location": "Wankhede",
+      "traders": "12K Traders"
+    },
+    {
+      "id": "apple-event",
+      "title": "Apple Event",
+      "tiles": [{ "emoji": "", "accent": "slate" }],
+      "countdown": "2h 16m",
+      "time": "10:30 PM",
+      "location": "Online",
+      "traders": "8K Traders"
+    },
+    {
+      "id": "diwali-2024",
+      "title": "Diwali 2024",
+      "tiles": [{ "emoji": "🪔", "accent": "orange" }],
+      "countdown": "2d 6h",
+      "time": "31 Oct",
+      "location": "India",
+      "traders": "9K Traders"
+    },
+    {
+      "id": "rbi-policy-release",
+      "title": "RBI Policy Release",
+      "tiles": [{ "emoji": "🏦", "accent": "indigo" }],
+      "countdown": "3d 4h",
+      "time": "1 Nov",
+      "location": "Mumbai",
+      "traders": "3K Traders"
+    }
+  ],
+  "months": [
+    { "id": "october", "name": "October", "events": 18, "icons": ["🏏", "🏛️", "🎬"], "current": true },
+    { "id": "november", "name": "November", "events": 24, "icons": ["🪔", "🏛️", "⚽"] },
+    { "id": "december", "name": "December", "events": 32, "icons": ["🎬", "💼", "🏏"] },
+    { "id": "january-2025", "name": "January 2025", "events": 28, "icons": [] },
+    { "id": "february-2025", "name": "February 2025", "events": 22, "icons": [] },
+    { "id": "march-2025", "name": "March 2025", "events": 15, "icons": [] }
+  ],
+  "heatmap": {
+    "days": ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
+    "rows": [
+      [1, 2, 0, 1, 3, 2, 1],
+      [2, 1, 2, 4, 1, 0, 2],
+      [0, 3, 1, 2, 2, 1, 0],
+      [1, 2, 4, 1, 0, 2, 3],
+      [2, 0, 1, 3, 2, 4, 1],
+      [1, 1, 2, 0, 1, 2, 0]
+    ]
+  },
+  "rail": {
+    "calendar": [
+      { "id": "cal-odi", "time": "2:00 PM", "emoji": "🏏", "accent": "emerald", "title": "India vs Australia ODI", "location": "Ahmedabad", "status": "live" },
+      { "id": "cal-ipl", "time": "4:30 PM", "emoji": "🏆", "accent": "amber", "title": "IPL Auction 2025", "location": "Jeddah, Saudi Arabia", "status": "live" },
+      { "id": "cal-lok-sabha", "time": "6:00 PM", "emoji": "🏛️", "accent": "violet", "title": "Lok Sabha Counting", "location": "New Delhi", "status": "live" },
+      { "id": "cal-sensex", "time": "7:30 PM", "emoji": "📈", "accent": "emerald", "title": "Sensex Market Close", "location": "Mumbai", "status": "starting" },
+      { "id": "cal-apple", "time": "10:30 PM", "emoji": "", "accent": "slate", "title": "Apple Event", "location": "Online", "status": "starting" }
+    ],
+    "recentlyAdded": [
+      { "id": "sbi-q2", "emoji": "🏦", "accent": "indigo", "title": "SBI Q2 Results", "meta": "24 Oct · Mumbai", "traders": "2K Traders" },
+      { "id": "iphone-16", "emoji": "📱", "accent": "slate", "title": "iPhone 16 Launch", "meta": "29 Oct · Online", "traders": "1.6K Traders" },
+      { "id": "up-by-elections", "emoji": "🗳️", "accent": "violet", "title": "UP By-Elections", "meta": "30 Oct · Uttar Pradesh", "traders": "3K Traders" },
+      { "id": "ai-summit", "emoji": "🤖", "accent": "sky", "title": "Global AI Summit 2024", "meta": "31 Oct · New Delhi", "traders": "1.2K Traders" }
+    ],
+    "mostFollowed": [
+      { "id": "ipl-2025", "emoji": "🏆", "accent": "amber", "title": "IPL 2025", "markets": 24, "followers": "148K Followers" },
+      { "id": "india-budget-2025", "emoji": "💰", "accent": "indigo", "title": "India Budget 2025", "markets": 15, "followers": "96K Followers" },
+      { "id": "oscars-2025", "emoji": "🎬", "accent": "rose", "title": "Oscars 2025", "markets": 12, "followers": "62K Followers" },
+      { "id": "world-cup-2027", "emoji": "🏏", "accent": "emerald", "title": "World Cup 2027", "markets": 28, "followers": "82K Followers" }
+    ],
+    "aiPrompts": [
+      "Which events are happening this week?",
+      "Show cricket events today",
+      "Show elections next month",
+      "Show all RBI meetings"
+    ]
+  }
+}

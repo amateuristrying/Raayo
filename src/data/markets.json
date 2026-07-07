@@ -1,0 +1,41 @@
+[
+  {
+    "id": "rbi-repo-rate-june",
+    "status": { "label": "Breaking", "tone": "breaking" },
+    "icon": "chart",
+    "title": "Will RBI cut repo rate in June 2024?",
+    "category": "Finance",
+    "closes": "Closes 10 Jun",
+    "probability": 27,
+    "delta": { "direction": "up", "value": 11 },
+    "sparkline": [12, 14, 13, 16, 15, 18, 17, 21, 20, 24, 23, 27],
+    "volume": "₹18.2L",
+    "traders": "3.1K"
+  },
+  {
+    "id": "kalki-1000-cr",
+    "status": { "label": "Rapid Rise", "tone": "rising" },
+    "icon": "flame",
+    "title": "Will \"Kalki 2898 AD\" cross ₹1000 cr worldwide?",
+    "category": "Bollywood",
+    "closes": "Closes 30 Jun",
+    "probability": 53,
+    "delta": { "direction": "up", "value": 15 },
+    "sparkline": [30, 33, 32, 36, 35, 39, 41, 40, 45, 47, 50, 53],
+    "volume": "₹9.4L",
+    "traders": "2.6K"
+  },
+  {
+    "id": "sensex-80k",
+    "status": { "label": "Ending Soon", "tone": "ending" },
+    "icon": "hourglass",
+    "title": "Will Sensex close above 80,000 this week?",
+    "category": "Finance",
+    "closes": "Closes in 2h 15m",
+    "probability": 61,
+    "delta": { "direction": "down", "value": 3 },
+    "sparkline": [72, 70, 71, 68, 69, 66, 67, 64, 65, 62, 63, 61],
+    "volume": "₹6.7L",
+    "traders": "1.8K"
+  }
+]

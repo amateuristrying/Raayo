@@ -1,0 +1,12 @@
+[
+  { "id": "all", "name": "All" },
+  { "id": "following", "name": "Following" },
+  { "id": "politics", "name": "Politics", "emoji": "🏛️", "count": 61 },
+  { "id": "cricket", "name": "Cricket", "emoji": "🏏", "count": 124 },
+  { "id": "ipl", "name": "IPL", "emoji": "🏆", "count": 48 },
+  { "id": "bollywood", "name": "Bollywood", "emoji": "🎬", "count": 38 },
+  { "id": "finance", "name": "Finance", "emoji": "💰", "count": 92 },
+  { "id": "tech", "name": "Tech", "emoji": "📱", "count": 56 },
+  { "id": "startups", "name": "Startups", "emoji": "🚀", "count": 27 },
+  { "id": "science", "name": "Science", "emoji": "🔬", "count": 19 }
+]

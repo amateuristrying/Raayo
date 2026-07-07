@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ind-vs-aus-odi",
+    "title": "India vs Australia ODI",
+    "emoji": "🏏",
+    "theme": "cricket",
+    "activeMarkets": 6,
+    "markets": [
+      { "title": "India to win the match?", "probability": 74, "delta": { "direction": "up", "value": 8 } },
+      { "title": "Virat Kohli to score 100+ runs?", "probability": 41, "delta": { "direction": "up", "value": 12 } },
+      { "title": "Rohit Sharma highest run scorer?", "probability": 29, "delta": { "direction": "down", "value": 6 } }
+    ]
+  },
+  {
+    "id": "lok-sabha-2024",
+    "title": "2024 Lok Sabha Elections",
+    "emoji": "🗳️",
+    "theme": "elections",
+    "activeMarkets": 12,
+    "markets": [
+      { "title": "NDA to get majority?", "probability": 68, "delta": { "direction": "up", "value": 5 } },
+      { "title": "Congress vote share above 25%?", "probability": 37, "delta": { "direction": "down", "value": 3 } },
+      { "title": "Voter turnout above 70%?", "probability": 61, "delta": { "direction": "up", "value": 7 } }
+    ]
+  },
+  {
+    "id": "bollywood",
+    "title": "Bollywood",
+    "emoji": "🎬",
+    "theme": "bollywood",
+    "activeMarkets": 8,
+    "markets": [
+      { "title": "Kalki 2898 AD crosses ₹1000 cr?", "probability": 53, "delta": { "direction": "up", "value": 15 } },
+      { "title": "War 2 opening day above ₹50 cr?", "probability": 42, "delta": { "direction": "up", "value": 6 } },
+      { "title": "Animal Park release in 2024?", "probability": 36, "delta": { "direction": "down", "value": 4 } }
+    ]
+  }
+]

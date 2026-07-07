@@ -1,0 +1,130 @@
+{
+  "metrics": [
+    { "id": "categories", "icon": "grid", "value": "18", "label": "Categories" },
+    { "id": "active-events", "icon": "calendar", "value": "4,832", "label": "Active Events" },
+    { "id": "markets", "icon": "bars", "value": "15,284", "label": "Markets" },
+    { "id": "predictions", "icon": "trending", "value": "1.2M", "label": "Predictions" },
+    { "id": "trending-today", "icon": "flame", "value": "412", "label": "Trending Today" }
+  ],
+  "featured": [
+    {
+      "id": "politics",
+      "name": "Politics",
+      "emoji": "🏛️",
+      "accent": "violet",
+      "description": "Elections, government, parliament, parties & policy decisions.",
+      "markets": 82,
+      "events": 18,
+      "predictions": "245K",
+      "trending": ["BJP", "Lok Sabha", "Rahul Gandhi"]
+    },
+    {
+      "id": "cricket",
+      "name": "Cricket",
+      "emoji": "🏏",
+      "accent": "emerald",
+      "description": "International, IPL, domestic cricket, players, teams & more.",
+      "markets": 124,
+      "events": 34,
+      "predictions": "890K",
+      "trending": ["India vs Australia", "Virat Kohli", "IPL Auction"]
+    },
+    {
+      "id": "movies",
+      "name": "Movies",
+      "emoji": "🎬",
+      "accent": "rose",
+      "description": "Bollywood, box office, releases, awards & movie predictions.",
+      "markets": 42,
+      "events": 12,
+      "predictions": "95K",
+      "trending": ["War 3", "Animal Park", "Oscars"]
+    },
+    {
+      "id": "economy",
+      "name": "Economy",
+      "emoji": "💰",
+      "accent": "indigo",
+      "description": "RBI, inflation, GDP, budget, markets & economic indicators.",
+      "markets": 68,
+      "events": 16,
+      "predictions": "132K",
+      "trending": ["Inflation", "Budget 2024", "RBI MPC"]
+    }
+  ],
+  "all": [
+    { "id": "politics", "name": "Politics", "emoji": "🏛️", "accent": "violet", "description": "Elections, parties & governance", "markets": 82, "events": 18, "predictions": 2, "today": "6,421" },
+    { "id": "cricket", "name": "Cricket", "emoji": "🏏", "accent": "emerald", "description": "IPL, ICC, players & teams", "markets": 124, "events": 34, "predictions": 2, "today": "8,412" },
+    { "id": "sports", "name": "Sports", "emoji": "⚽", "accent": "sky", "description": "Football, Olympics & more", "markets": 68, "events": 22, "predictions": 2, "today": "3,218" },
+    { "id": "movies", "name": "Movies", "emoji": "🎬", "accent": "rose", "description": "Films, box office & awards", "markets": 42, "events": 12, "predictions": 1, "today": "2,114" },
+    { "id": "entertainment", "name": "Entertainment", "emoji": "📺", "accent": "orange", "description": "OTT, TV shows & reality", "markets": 38, "events": 14, "predictions": 1, "today": "1,842" },
+    { "id": "celebrities", "name": "Celebrities", "emoji": "⭐", "accent": "amber", "description": "Actors, influencers & creators", "markets": 56, "events": 18, "predictions": 2, "today": "2,933" },
+    { "id": "markets", "name": "Markets", "emoji": "📈", "accent": "emerald", "description": "Stocks, crypto & commodities", "markets": 92, "events": 20, "predictions": 1, "today": "2,145" },
+    { "id": "economy", "name": "Economy", "emoji": "💰", "accent": "indigo", "description": "Macro, RBI, GDP & budget", "markets": 68, "events": 16, "predictions": 1, "today": "1,923" },
+    { "id": "technology", "name": "Technology", "emoji": "🤖", "accent": "sky", "description": "AI, startups & tech companies", "markets": 64, "events": 18, "predictions": 1, "today": "1,672" },
+    { "id": "business", "name": "Business", "emoji": "💼", "accent": "slate", "description": "Companies, earnings & M&A", "markets": 54, "events": 16, "predictions": 1, "today": "1,385" },
+    { "id": "science-space", "name": "Science & Space", "emoji": "🚀", "accent": "indigo", "description": "ISRO, NASA & discoveries", "markets": 28, "events": 10, "predictions": 1, "today": "842" },
+    { "id": "mobility", "name": "Mobility", "emoji": "🚗", "accent": "sky", "description": "EVs, auto, aviation & railways", "markets": 36, "events": 12, "predictions": 1, "today": "962" },
+    { "id": "world", "name": "World", "emoji": "🌍", "accent": "emerald", "description": "Global events & geopolitics", "markets": 72, "events": 20, "predictions": 2, "today": "2,271" },
+    { "id": "education", "name": "Education", "emoji": "🎓", "accent": "amber", "description": "Exams, education & policy", "markets": 26, "events": 8, "predictions": 1, "today": "612" },
+    { "id": "weather", "name": "Weather", "emoji": "⛅", "accent": "sky", "description": "Forecasts, monsoon & climate", "markets": 24, "events": 12, "predictions": 1, "today": "512" },
+    { "id": "festivals-culture", "name": "Festivals & Culture", "emoji": "🪔", "accent": "orange", "description": "Festivals, religion & culture", "markets": 18, "events": 8, "predictions": 2, "today": "421" },
+    { "id": "gaming", "name": "Gaming", "emoji": "🎮", "accent": "violet", "description": "Esports, games & tournaments", "markets": 22, "events": 10, "predictions": 3, "today": "662" }
+  ],
+  "intelligence": [
+    { "id": "politics", "category": "Politics", "metric": "Sentiment", "value": "72%", "label": "Bullish", "delta": { "direction": "up", "value": 4 } },
+    { "id": "cricket", "category": "Cricket", "metric": "Avg. Prob Movement", "value": "8%", "label": "Today", "delta": { "direction": "up", "value": 2 } },
+    { "id": "movies", "category": "Movies", "metric": "Sentiment", "value": "61%", "label": "Bullish", "delta": { "direction": "up", "value": 3 } },
+    { "id": "economy", "category": "Economy", "metric": "Sentiment", "value": "58%", "label": "Neutral", "delta": { "direction": "up", "value": 1 } }
+  ],
+  "comparison": [
+    { "id": "politics", "emoji": "🏛️", "name": "Politics", "markets": 82, "events": 18, "predictions30d": "245K", "accuracy": "74%", "spark": [40, 44, 42, 47, 45, 50, 53], "delta": { "direction": "up", "value": 8 } },
+    { "id": "cricket", "emoji": "🏏", "name": "Cricket", "markets": 124, "events": 34, "predictions30d": "890K", "accuracy": "81%", "spark": [52, 55, 58, 56, 62, 66, 70], "delta": { "direction": "up", "value": 12 } },
+    { "id": "movies", "emoji": "🎬", "name": "Movies", "markets": 42, "events": 12, "predictions30d": "95K", "accuracy": "69%", "spark": [30, 32, 31, 34, 33, 36, 38], "delta": { "direction": "up", "value": 5 } },
+    { "id": "economy", "emoji": "💰", "name": "Economy", "markets": 68, "events": 16, "predictions30d": "132K", "accuracy": "72%", "spark": [38, 40, 39, 43, 42, 45, 47], "delta": { "direction": "up", "value": 6 } },
+    { "id": "technology", "emoji": "🤖", "name": "Technology", "markets": 64, "events": 18, "predictions30d": "98K", "accuracy": "76%", "spark": [34, 37, 36, 40, 39, 43, 45], "delta": { "direction": "up", "value": 7 } }
+  ],
+  "heatmap": {
+    "days": ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
+    "rows": [
+      { "label": "Politics", "cells": [2, 3, 1, 4, 2, 3, 4, 2, 3, 1, 2, 4, 3, 2] },
+      { "label": "Cricket", "cells": [3, 2, 4, 3, 4, 2, 3, 4, 2, 4, 3, 4, 2, 3] },
+      { "label": "Movies", "cells": [1, 2, 1, 3, 2, 1, 2, 3, 4, 2, 1, 2, 3, 1] },
+      { "label": "Economy", "cells": [2, 1, 3, 2, 1, 4, 2, 1, 3, 2, 4, 1, 2, 2] },
+      { "label": "Technology", "cells": [1, 3, 2, 1, 2, 3, 1, 2, 1, 3, 2, 1, 4, 2] },
+      { "label": "Business", "cells": [2, 1, 1, 2, 3, 1, 2, 1, 2, 1, 3, 2, 1, 1] }
+    ]
+  },
+  "rail": {
+    "trendingTopics": [
+      { "id": "ind-aus", "rank": 1, "emoji": "🏏", "name": "India vs Australia ODI", "status": "live" },
+      { "id": "lok-sabha", "rank": 2, "emoji": "🗳️", "name": "Lok Sabha Elections", "status": "live" },
+      { "id": "rbi-repo", "rank": 3, "emoji": "🏦", "name": "RBI Repo Rate", "status": "starting" },
+      { "id": "war-3", "rank": 4, "emoji": "🎬", "name": "War 3 Release", "status": "starting" },
+      { "id": "sensex", "rank": 5, "emoji": "📈", "name": "Sensex Market Close", "status": "starting" }
+    ],
+    "upcomingEvents": [
+      { "id": "ipl-auction", "emoji": "🏆", "accent": "amber", "title": "IPL Auction 2025", "starts": "Starts in 2h 15m" },
+      { "id": "apple-event", "emoji": "", "accent": "slate", "title": "Apple Event", "starts": "Starts in 1 day" },
+      { "id": "diwali", "emoji": "🪔", "accent": "orange", "title": "Diwali 2024", "starts": "Starts in 2 days" },
+      { "id": "union-budget", "emoji": "🏛️", "accent": "indigo", "title": "Union Budget 2025", "starts": "Starts in 10 days" }
+    ],
+    "topEntities": [
+      { "id": "virat-kohli", "emoji": "🏏", "accent": "emerald", "name": "Virat Kohli", "type": "Cricketer" },
+      { "id": "narendra-modi", "emoji": "🏛️", "accent": "orange", "name": "Narendra Modi", "type": "Politician" },
+      { "id": "rbi", "emoji": "🏦", "accent": "indigo", "name": "RBI", "type": "Organization" },
+      { "id": "elon-musk", "emoji": "🚀", "accent": "slate", "name": "Elon Musk", "type": "Entrepreneur" },
+      { "id": "bcci", "emoji": "🏆", "accent": "sky", "name": "BCCI", "type": "Organization" }
+    ],
+    "recentlyResolved": [
+      { "id": "delhi-elections", "title": "Delhi Elections 2024", "outcome": "Yes", "probability": 92 },
+      { "id": "csk-ipl", "title": "CSK to qualify for IPL 2024?", "outcome": "Yes", "probability": 91 },
+      { "id": "budget-passed", "title": "Budget Passed in Lok Sabha?", "outcome": "Yes", "probability": 89 },
+      { "id": "t20-world-cup", "title": "India won T20 World Cup?", "outcome": "Yes", "probability": 95 }
+    ],
+    "aiSummary": {
+      "updated": "2 min ago",
+      "text": "Cricket and Politics continue to dominate activity today. Markets around India vs Australia and Lok Sabha Elections are driving the highest engagement across categories."
+    }
+  }
+}

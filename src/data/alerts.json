@@ -1,0 +1,63 @@
+{
+  "liveAlerts": [
+    {
+      "id": "alert-odi",
+      "tone": "up",
+      "quoted": "India to win today's ODI",
+      "text": "moved up",
+      "emphasis": "8%",
+      "time": "2m ago"
+    },
+    {
+      "id": "alert-rbi",
+      "tone": "down",
+      "quoted": "RBI cut repo rate in June?",
+      "text": "dropped",
+      "emphasis": "11%",
+      "time": "5m ago"
+    },
+    {
+      "id": "alert-volume",
+      "tone": "spike",
+      "text": "High volume spike in 3 markets",
+      "time": "7m ago"
+    }
+  ],
+  "endingSoon": [
+    { "id": "es-sensex", "title": "Sensex above 80,000 this week?", "timeLeft": "2h 15m" },
+    { "id": "es-turnout", "title": "LS elections: Voter turnout above 70%?", "timeLeft": "3h 42m" },
+    { "id": "es-mi", "title": "MI to win IPL 2024?", "timeLeft": "5h 10m" }
+  ],
+  "topMovers": [
+    {
+      "id": "mover-kalki",
+      "rank": 1,
+      "emoji": "🎬",
+      "title": "Kalki 2898 AD crosses ₹1000 cr?",
+      "delta": { "direction": "up", "value": 15 }
+    },
+    {
+      "id": "mover-kohli",
+      "rank": 2,
+      "emoji": "🏏",
+      "title": "Virat Kohli to score 100+ runs?",
+      "delta": { "direction": "up", "value": 12 }
+    },
+    {
+      "id": "mover-rbi",
+      "rank": 3,
+      "emoji": "🏛️",
+      "title": "RBI cut repo rate in June?",
+      "delta": { "direction": "down", "value": 11 }
+    }
+  ],
+  "recentlyResolved": [
+    {
+      "id": "resolved-csk",
+      "emoji": "🏆",
+      "title": "CSK to qualify for IPL Playoffs 2024?",
+      "outcome": "Yes",
+      "probability": 92
+    }
+  ]
+}

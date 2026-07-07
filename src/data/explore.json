@@ -1,0 +1,140 @@
+{
+  "metrics": [
+    { "id": "active-markets", "icon": "activity", "value": "15,284", "label": "Active Markets" },
+    { "id": "events", "icon": "calendar", "value": "4,832", "label": "Events" },
+    { "id": "predictions", "icon": "target", "value": "1.2M", "label": "Predictions" },
+    { "id": "categories", "icon": "compass", "value": "18", "label": "Categories" }
+  ],
+  "trendingSearches": [
+    { "id": "modi", "emoji": "🔥", "label": "Narendra Modi" },
+    { "id": "ipl-final", "emoji": "🏏", "label": "IPL Final" },
+    { "id": "rbi", "emoji": "🏛️", "label": "RBI" },
+    { "id": "kohli", "emoji": "🏏", "label": "Virat Kohli" },
+    { "id": "war-3", "emoji": "🎬", "label": "War 3" },
+    { "id": "openai", "emoji": "🤖", "label": "OpenAI" },
+    { "id": "sensex", "emoji": "📈", "label": "Sensex" },
+    { "id": "srk", "emoji": "🎭", "label": "Shah Rukh Khan" }
+  ],
+  "aiPrompts": [
+    { "id": "cricket-today", "text": "Show all cricket markets ending today" },
+    { "id": "bjp", "text": "Show BJP predictions" },
+    { "id": "ai-70", "text": "Show AI markets above 70%" },
+    { "id": "kohli-history", "text": "Show Virat Kohli history" }
+  ],
+  "entities": [
+    { "id": "virat-kohli", "name": "Virat Kohli", "type": "Cricketer", "emoji": "🏏", "accent": "emerald", "markets": 32, "traders": "12.4K" },
+    { "id": "narendra-modi", "name": "Narendra Modi", "type": "Politician", "emoji": "🏛️", "accent": "orange", "markets": 48, "traders": "22.1K" },
+    { "id": "rbi", "name": "RBI", "type": "Institution", "emoji": "🏦", "accent": "indigo", "markets": 21, "traders": "9.8K" },
+    { "id": "tesla", "name": "Tesla", "type": "Company", "emoji": "⚡", "accent": "rose", "markets": 14, "traders": "6.2K" },
+    { "id": "ipl-2027", "name": "IPL 2027", "type": "Tournament", "emoji": "🏆", "accent": "amber", "markets": 56, "traders": "31.5K" },
+    { "id": "shah-rukh-khan", "name": "Shah Rukh Khan", "type": "Actor", "emoji": "🎬", "accent": "violet", "markets": 11, "traders": "5.4K" }
+  ],
+  "categories": [
+    { "id": "politics", "name": "Politics", "emoji": "🏛️", "accent": "violet", "markets": 61, "traders": "28.4K", "topics": ["BJP", "Elections", "Parliament"] },
+    { "id": "cricket", "name": "Cricket", "emoji": "🏏", "accent": "emerald", "markets": 124, "traders": "52.7K", "topics": ["IPL", "ICC", "Team India"] },
+    { "id": "movies", "name": "Movies", "emoji": "🎬", "accent": "rose", "markets": 38, "traders": "18.9K", "topics": ["Box Office", "Actors", "Awards"] },
+    { "id": "technology", "name": "Technology", "emoji": "🤖", "accent": "sky", "markets": 56, "traders": "21.3K", "topics": ["AI", "Startups", "Open Source"] }
+  ],
+  "featuredEvents": [
+    {
+      "id": "ind-vs-aus-odi",
+      "title": "India vs Australia ODI",
+      "emoji": "🏏",
+      "accent": "emerald",
+      "date": "Today · 2:00 PM",
+      "topPrediction": { "title": "India to win the match?", "probability": 74 },
+      "markets": 6,
+      "traders": "8.4K"
+    },
+    {
+      "id": "lok-sabha-2029",
+      "title": "2029 Lok Sabha Elections",
+      "emoji": "🗳️",
+      "accent": "violet",
+      "date": "Apr – May 2029",
+      "topPrediction": { "title": "NDA to get majority?", "probability": 68 },
+      "markets": 12,
+      "traders": "41.2K"
+    },
+    {
+      "id": "ipl-2027",
+      "title": "IPL 2027",
+      "emoji": "🏆",
+      "accent": "amber",
+      "date": "Mar – May 2027",
+      "topPrediction": { "title": "MI to win IPL 2027?", "probability": 31 },
+      "markets": 24,
+      "traders": "31.5K"
+    },
+    {
+      "id": "union-budget-2028",
+      "title": "Union Budget 2028",
+      "emoji": "💰",
+      "accent": "indigo",
+      "date": "1 Feb 2028",
+      "topPrediction": { "title": "Fiscal deficit below 4.5%?", "probability": 55 },
+      "markets": 9,
+      "traders": "12.7K"
+    }
+  ],
+  "graph": [
+    { "id": "virat-kohli", "name": "Virat Kohli", "type": "Cricketer", "emoji": "🏏", "accent": "emerald" },
+    { "id": "ind-vs-aus", "name": "India vs Australia ODI", "type": "Event", "emoji": "🏟️", "accent": "sky" },
+    { "id": "bcci", "name": "BCCI", "type": "Organization", "emoji": "🏛️", "accent": "indigo" },
+    { "id": "champions-trophy", "name": "ICC Champions Trophy", "type": "Tournament", "emoji": "🏆", "accent": "amber" },
+    { "id": "rohit-sharma", "name": "Rohit Sharma", "type": "Cricketer", "emoji": "🏏", "accent": "rose" }
+  ],
+  "probabilityBuckets": [
+    { "id": "longshots", "range": "0–20%", "label": "Longshots", "markets": 214, "tone": "red", "spark": [14, 12, 15, 11, 13, 10, 12, 9] },
+    { "id": "possible", "range": "20–40%", "label": "Possible", "markets": 341, "tone": "amber", "spark": [28, 31, 29, 33, 30, 34, 32, 35] },
+    { "id": "uncertain", "range": "40–60%", "label": "Uncertain", "markets": 498, "tone": "slate", "spark": [52, 49, 53, 50, 48, 51, 49, 52] },
+    { "id": "likely", "range": "60–80%", "label": "Likely", "markets": 387, "tone": "sky", "spark": [62, 65, 63, 67, 66, 70, 69, 72] },
+    { "id": "almost-certain", "range": "80–100%", "label": "Almost Certain", "markets": 176, "tone": "emerald", "spark": [82, 84, 83, 86, 88, 87, 90, 92] }
+  ],
+  "recentlyResolved": [
+    { "id": "csk-playoffs", "title": "CSK to qualify for IPL Playoffs 2024?", "outcome": "Yes", "probability": 92, "resolvedAgo": "2d ago", "markets": 4 },
+    { "id": "monsoon-kerala", "title": "Monsoon to arrive early in Kerala?", "outcome": "Yes", "probability": 81, "resolvedAgo": "5d ago", "markets": 3 },
+    { "id": "adani-green", "title": "Adani Green to cross ₹2000 in May?", "outcome": "No", "probability": 34, "resolvedAgo": "1w ago", "markets": 5 },
+    { "id": "gdp-q4", "title": "India GDP growth above 7% in Q4?", "outcome": "Yes", "probability": 76, "resolvedAgo": "1w ago", "markets": 6 }
+  ],
+  "rail": {
+    "trendingSearches": [
+      { "id": "kohli", "rank": 1, "name": "Virat Kohli", "delta": { "direction": "up", "value": 24 } },
+      { "id": "rbi", "rank": 2, "name": "RBI", "delta": { "direction": "down", "value": 11 } },
+      { "id": "ipl-2027", "rank": 3, "name": "IPL 2027", "delta": { "direction": "up", "value": 18 } },
+      { "id": "war-3", "rank": 4, "name": "War 3", "delta": { "direction": "up", "value": 32 } },
+      { "id": "modi", "rank": 5, "name": "Narendra Modi", "delta": { "direction": "up", "value": 9 } }
+    ],
+    "recommendedEntities": [
+      { "id": "elon-musk", "name": "Elon Musk", "emoji": "🚀", "accent": "slate", "markets": 8 },
+      { "id": "bjp", "name": "BJP", "emoji": "🪷", "accent": "orange", "markets": 14 },
+      { "id": "openai", "name": "OpenAI", "emoji": "🤖", "accent": "sky", "markets": 6 },
+      { "id": "ind-vs-aus", "name": "India vs Australia", "emoji": "🏏", "accent": "emerald", "markets": 24 },
+      { "id": "tesla", "name": "Tesla", "emoji": "⚡", "accent": "rose", "markets": 6 }
+    ],
+    "collections": [
+      { "id": "election", "title": "Election Collection", "emoji": "🗳️", "accent": "violet", "markets": 30 },
+      { "id": "budget", "title": "Budget Collection", "emoji": "💰", "accent": "indigo", "markets": 18 },
+      { "id": "ipl", "title": "IPL Collection", "emoji": "🏆", "accent": "amber", "markets": 24 },
+      { "id": "movies", "title": "Movie Releases", "emoji": "🎬", "accent": "rose", "markets": 25 },
+      { "id": "ai", "title": "AI Companies", "emoji": "🤖", "accent": "sky", "markets": 22 }
+    ],
+    "recentlyViewed": [
+      { "id": "kohli-century", "title": "Will Kohli score a century?", "probability": 74, "outcome": "Yes" },
+      { "id": "rbi-repo", "title": "RBI repo rate cut in June?", "probability": 27, "outcome": "No" },
+      { "id": "ind-aus-odi", "title": "India vs Australia ODI", "probability": 74, "outcome": "Yes" },
+      { "id": "sensex-80k", "title": "Sensex above 80,000 this week?", "probability": 61, "outcome": "Yes" },
+      { "id": "ls-turnout", "title": "LS elections: Voter turnout above 70%?", "probability": 68, "outcome": "Yes" }
+    ],
+    "savedSearches": [
+      "Virat Kohli",
+      "IPL 2027",
+      "RBI",
+      "Tesla",
+      "Lok Sabha 2029",
+      "War 3",
+      "AI Markets",
+      "Election 2029"
+    ]
+  }
+}

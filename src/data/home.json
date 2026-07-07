@@ -1,0 +1,68 @@
+{
+  "user": {
+    "name": "Abhi Roop",
+    "handle": "@abhi.roop",
+    "verified": true,
+    "rank": "#1,248",
+    "accuracy": "67%",
+    "winStreak": 18,
+    "pointsBalance": 12840,
+    "notifications": 8
+  },
+  "ticker": [
+    { "id": "t1", "text": "Kohli Century", "dot": "green", "delta": { "direction": "up", "value": 11 } },
+    { "id": "t2", "text": "RBI Market", "dot": "indigo", "delta": { "direction": "down", "value": 7 } },
+    { "id": "t3", "text": "Election Exit Poll released", "dot": "purple" },
+    { "id": "t4", "text": "3 Markets resolving today", "dot": "blue" }
+  ],
+  "hero": {
+    "eyebrow": "India's Pulse",
+    "headline": "Will India win today's ODI vs Australia?",
+    "category": "Cricket",
+    "closesIn": "6h 42m",
+    "probability": 74,
+    "outcome": "YES",
+    "delta": { "direction": "up", "value": 8 },
+    "deltaWindow": "24h",
+    "traders": 8421,
+    "volume": "₹24.8L",
+    "liquidity": "High",
+    "whyItMoved": "Rain forecast reduced, India won the toss and chose to bat first.",
+    "series": [
+      { "hour": 0, "value": 26 },
+      { "hour": 1, "value": 30 },
+      { "hour": 2, "value": 28 },
+      { "hour": 3, "value": 33 },
+      { "hour": 4, "value": 31 },
+      { "hour": 5, "value": 36 },
+      { "hour": 6, "value": 40 },
+      { "hour": 7, "value": 37 },
+      { "hour": 8, "value": 44 },
+      { "hour": 9, "value": 47 },
+      { "hour": 10, "value": 43 },
+      { "hour": 11, "value": 50 },
+      { "hour": 12, "value": 54 },
+      { "hour": 13, "value": 51 },
+      { "hour": 14, "value": 58 },
+      { "hour": 15, "value": 62 },
+      { "hour": 16, "value": 59 },
+      { "hour": 17, "value": 65 },
+      { "hour": 18, "value": 69 },
+      { "hour": 19, "value": 66 },
+      { "hour": 20, "value": 71 },
+      { "hour": 21, "value": 68 },
+      { "hour": 22, "value": 72 },
+      { "hour": 23, "value": 70 },
+      { "hour": 24, "value": 74 }
+    ]
+  },
+  "aiPulse": {
+    "updated": "2 min ago",
+    "points": [
+      "Politics is bullish today.",
+      "Cricket is highly active.",
+      "Finance markets are volatile.",
+      "Bollywood sentiment is neutral."
+    ]
+  }
+}
