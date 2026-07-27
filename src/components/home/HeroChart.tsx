@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -28,6 +29,14 @@ const LINE_COLOR = "#8b7cf7";
 /** Probability-over-time area chart rendered inside the dark hero card. */
 export function HeroChart({ series, probability }: HeroChartProps) {
   const last = series[series.length - 1];
+
+  // Draw-in animation on mount only; live data updates must not redraw the
+  // whole line every tick.
+  const [animate, setAnimate] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => setAnimate(false), 1800);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="anim-chart relative h-full min-h-72 w-full">
@@ -70,6 +79,7 @@ export function HeroChart({ series, probability }: HeroChartProps) {
             stroke={LINE_COLOR}
             strokeWidth={2.5}
             fill="url(#heroArea)"
+            isAnimationActive={animate}
             animationDuration={1600}
             dot={false}
           />

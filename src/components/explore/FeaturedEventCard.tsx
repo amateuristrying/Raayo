@@ -3,6 +3,7 @@ import { Calendar } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { accentGradients } from "@/lib/accents";
 import { Card } from "@/components/ui/Card";
+import { openPrediction } from "@/engine/ui";
 import type { FeaturedEvent } from "@/types";
 
 interface FeaturedEventCardProps {
@@ -14,7 +15,17 @@ export const FeaturedEventCard = memo(function FeaturedEventCard({
   event,
 }: FeaturedEventCardProps) {
   return (
-    <Card hoverable className="anim-item cursor-pointer overflow-hidden">
+    <Card
+      hoverable
+      className="anim-item cursor-pointer overflow-hidden"
+      onClick={() =>
+        openPrediction({
+          id: `${event.id}--explore-top`,
+          title: event.topPrediction.title,
+          probability: event.topPrediction.probability,
+        })
+      }
+    >
       <div
         className={cn(
           "relative flex h-28 items-center justify-center overflow-hidden bg-gradient-to-br",

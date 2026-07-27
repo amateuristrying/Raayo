@@ -34,7 +34,7 @@ export function Button({
     <button
       type="button"
       className={cn(
-        "inline-flex cursor-pointer items-center justify-center rounded-xl font-semibold transition-all duration-200 hover:-translate-y-px active:translate-y-0",
+        "inline-flex cursor-pointer items-center justify-center rounded-xl font-semibold transition-all duration-200 hover:-translate-y-px active:translate-y-0 disabled:pointer-events-none disabled:opacity-50",
         variantClasses[variant],
         sizeClasses[size],
         className,

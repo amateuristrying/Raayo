@@ -1,6 +1,8 @@
 import { BadgeCheck, Coins, Flame } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { CountUp } from "@/components/ui/CountUp";
+import { useStore } from "@/engine/store";
+import { walletStore } from "@/engine/wallet";
 import type { User } from "@/types";
 
 interface UserCardProps {
@@ -27,6 +29,7 @@ function Stat({ value, label, accent = false }: StatProps) {
 
 /** Signed-in user summary pinned to the bottom of the sidebar. */
 export function UserCard({ user }: UserCardProps) {
+  const wallet = useStore(walletStore);
   return (
     <div className="rounded-2xl border border-slate-200/80 bg-white p-3.5 shadow-card">
       <div className="flex items-center gap-2.5">
@@ -52,7 +55,7 @@ export function UserCard({ user }: UserCardProps) {
         <p className="text-[10px] font-medium text-slate-400">Points Balance</p>
         <p className="mt-0.5 flex items-center gap-1.5 text-[15px] font-bold text-slate-900">
           <Coins className="size-4 text-amber-500" />
-          <CountUp value={user.pointsBalance} grouped />
+          <CountUp value={wallet.balance} grouped />
         </p>
       </div>
     </div>

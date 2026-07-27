@@ -3,6 +3,9 @@ import { cn } from "@/lib/cn";
 import { accentGradients } from "@/lib/accents";
 import { Card } from "@/components/ui/Card";
 import { TrendDelta } from "@/components/ui/TrendDelta";
+import { clusterMarketId, liveDelta, marketsStore } from "@/engine/markets";
+import { useStore } from "@/engine/store";
+import { openPrediction } from "@/engine/ui";
 import type { Accent, ClusterTheme, EventCluster } from "@/types";
 
 interface EventClusterCardProps {
@@ -41,25 +44,38 @@ function ClusterCover({ cluster }: { cluster: EventCluster }) {
 }
 
 export function EventClusterCard({ cluster }: EventClusterCardProps) {
+  const markets = useStore(marketsStore);
+
   return (
     <Card hoverable className="overflow-hidden">
       <ClusterCover cluster={cluster} />
       <div className="px-4 pt-1 pb-4">
         <ul className="divide-y divide-slate-100">
-          {cluster.markets.map((market) => (
-            <li key={market.title} className="flex items-center gap-2 py-2.5">
-              <p className="flex-1 pr-1 text-[13px] leading-snug text-slate-600">
-                {market.title}
-              </p>
-              <span className="text-sm font-bold text-slate-900">
-                {market.probability}%
-              </span>
-              <TrendDelta
-                delta={market.delta}
-                className="min-w-12 justify-end text-xs"
-              />
-            </li>
-          ))}
+          {cluster.markets.map((market) => {
+            const id = clusterMarketId(cluster.id, market.title);
+            const live = markets[id];
+            const probability = live?.probability ?? market.probability;
+            const delta = live ? liveDelta(live) : market.delta;
+            return (
+              <li key={market.title}>
+                <button
+                  type="button"
+                  onClick={() =>
+                    openPrediction({ id, title: market.title, probability })
+                  }
+                  className="flex w-full cursor-pointer items-center gap-2 rounded-md py-2.5 text-left transition-colors hover:bg-slate-50/80"
+                >
+                  <p className="flex-1 pr-1 text-[13px] leading-snug text-slate-600">
+                    {market.title}
+                  </p>
+                  <span className="text-sm font-bold text-slate-900">
+                    {probability}%
+                  </span>
+                  <TrendDelta delta={delta} className="min-w-12 justify-end text-xs" />
+                </button>
+              </li>
+            );
+          })}
         </ul>
         <div className="border-t border-slate-100 pt-3">
           <button

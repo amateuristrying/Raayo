@@ -5,12 +5,21 @@ import { CategoryChip } from "./CategoryChip";
 
 interface CategoryPillsProps {
   categories: Category[];
+  /** Controlled active pill id; omit for internal state. */
+  value?: string;
+  onChange?: (id: string) => void;
 }
 
 /** Horizontal category filter with an overflow scroll affordance. */
-export function CategoryPills({ categories }: CategoryPillsProps) {
-  const [activeId, setActiveId] = useState<string>(categories[0]?.id ?? "all");
+export function CategoryPills({ categories, value, onChange }: CategoryPillsProps) {
+  const [internal, setInternal] = useState<string>(categories[0]?.id ?? "all");
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const activeId = value ?? internal;
+  const select = (id: string) => {
+    setInternal(id);
+    onChange?.(id);
+  };
 
   const scrollForward = () => {
     scrollRef.current?.scrollBy({ left: 320, behavior: "smooth" });
@@ -27,7 +36,7 @@ export function CategoryPills({ categories }: CategoryPillsProps) {
             key={category.id}
             category={category}
             active={category.id === activeId}
-            onSelect={setActiveId}
+            onSelect={select}
           />
         ))}
       </div>

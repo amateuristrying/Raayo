@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { LiveTicker } from "@/components/layout/LiveTicker";
 import { HeroCard } from "@/components/home/HeroCard";
 import { CategoryPills } from "@/components/markets/CategoryPills";
@@ -11,6 +11,7 @@ import { categories, homeData } from "@/data";
 export function HomePage() {
   const rootRef = useRef<HTMLDivElement>(null);
   usePageReveal(rootRef);
+  const [category, setCategory] = useState("all");
 
   return (
     <div
@@ -25,11 +26,15 @@ export function HomePage() {
         <HeroCard market={homeData.hero} />
 
         <div className="anim-rise">
-          <CategoryPills categories={categories} />
+          <CategoryPills
+            categories={categories}
+            value={category}
+            onChange={setCategory}
+          />
         </div>
 
-        <EventClustersSection />
-        <TrendingMarketsSection />
+        <EventClustersSection categoryFilter={category} />
+        <TrendingMarketsSection categoryFilter={category} />
       </main>
 
       <RightRail />

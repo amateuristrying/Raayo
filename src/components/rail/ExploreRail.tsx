@@ -1,8 +1,11 @@
-import { Plus } from "lucide-react";
+import { Check, Plus } from "lucide-react";
+import { cn } from "@/lib/cn";
 import { EmojiTile } from "@/components/ui/EmojiTile";
 import { OutcomeChip } from "@/components/ui/OutcomeChip";
 import { TrendDelta } from "@/components/ui/TrendDelta";
 import { exploreData } from "@/data";
+import { followsStore, isFollowing, toggleFollow } from "@/engine/follows";
+import { useStore } from "@/engine/store";
 import type {
   Collection,
   RailTrendingSearch,
@@ -32,29 +35,40 @@ function TrendingSearchesCard({ items }: { items: RailTrendingSearch[] }) {
 }
 
 function RecommendedEntitiesCard({ items }: { items: RecommendedEntity[] }) {
+  const follows = useStore(followsStore);
   return (
     <RailCard variant="title" title="Recommended Entities" actionLabel="View all">
       <ul className="flex flex-col gap-3">
-        {items.map((entity) => (
-          <li key={entity.id} className="flex items-center gap-2.5">
-            <EmojiTile emoji={entity.emoji} accent={entity.accent} />
-            <span className="min-w-0 flex-1">
-              <span className="block truncate text-[13px] font-semibold text-slate-800">
-                {entity.name}
+        {items.map((entity) => {
+          const following = isFollowing(follows, entity.id);
+          return (
+            <li key={entity.id} className="flex items-center gap-2.5">
+              <EmojiTile emoji={entity.emoji} accent={entity.accent} />
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[13px] font-semibold text-slate-800">
+                  {entity.name}
+                </span>
+                <span className="block text-[11px] font-medium text-slate-400">
+                  {entity.markets} Markets
+                </span>
               </span>
-              <span className="block text-[11px] font-medium text-slate-400">
-                {entity.markets} Markets
-              </span>
-            </span>
-            <button
-              type="button"
-              className="flex h-7 shrink-0 cursor-pointer items-center gap-1 rounded-lg border border-slate-200 px-2.5 text-xs font-semibold text-brand-700 transition-colors hover:border-brand-200 hover:bg-brand-50"
-            >
-              <Plus className="size-3" />
-              Follow
-            </button>
-          </li>
-        ))}
+              <button
+                type="button"
+                aria-pressed={following}
+                onClick={() => toggleFollow(entity.id)}
+                className={cn(
+                  "flex h-7 shrink-0 cursor-pointer items-center gap-1 rounded-lg border px-2.5 text-xs font-semibold transition-colors",
+                  following
+                    ? "border-brand-700 bg-brand-700 text-white"
+                    : "border-slate-200 text-brand-700 hover:border-brand-200 hover:bg-brand-50",
+                )}
+              >
+                {following ? <Check className="size-3" /> : <Plus className="size-3" />}
+                {following ? "Following" : "Follow"}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </RailCard>
   );

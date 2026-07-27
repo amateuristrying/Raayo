@@ -4,6 +4,7 @@ import { accentGradients } from "@/lib/accents";
 import { Card } from "@/components/ui/Card";
 import { EmojiTile } from "@/components/ui/EmojiTile";
 import { TrendDelta } from "@/components/ui/TrendDelta";
+import { openPrediction } from "@/engine/ui";
 import type { FeaturedEventData, ProbabilityTone } from "@/types";
 
 interface FeaturedEventCardProps {
@@ -37,7 +38,18 @@ export const FeaturedEventCard = memo(function FeaturedEventCard({
   event,
 }: FeaturedEventCardProps) {
   return (
-    <Card hoverable className="anim-item cursor-pointer overflow-hidden">
+    <Card
+      hoverable
+      className="anim-item cursor-pointer overflow-hidden"
+      onClick={() =>
+        openPrediction({
+          id: `${event.id}--top`,
+          title: event.mostPopular.question,
+          category: event.type.label,
+          probability: event.mostPopular.probability,
+        })
+      }
+    >
       <div
         className={cn(
           "relative flex h-28 items-center justify-center overflow-hidden bg-gradient-to-br",

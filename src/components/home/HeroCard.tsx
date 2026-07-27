@@ -2,6 +2,9 @@ import type { ReactNode } from "react";
 import { ChartNoAxesColumn, Droplets, Users } from "lucide-react";
 import { CountUp } from "@/components/ui/CountUp";
 import { TrendDelta } from "@/components/ui/TrendDelta";
+import { HERO_MARKET_ID, liveDelta, marketsStore } from "@/engine/markets";
+import { useStore } from "@/engine/store";
+import { openPrediction } from "@/engine/ui";
 import type { HeroMarket } from "@/types";
 import { HeroChart } from "./HeroChart";
 
@@ -31,8 +34,26 @@ function HeroStat({ icon, value, label }: HeroStatProps) {
 
 /** "India's Pulse" — the signature dark hero market card. */
 export function HeroCard({ market }: HeroCardProps) {
+  const live = useStore(marketsStore)[HERO_MARKET_ID];
+  const probability = live?.probability ?? market.probability;
+  const delta = live ? liveDelta(live) : market.delta;
+  const series =
+    live && live.spark.length > 0
+      ? live.spark.map((value, index) => ({ hour: index, value }))
+      : market.series;
+
   return (
-    <section className="anim-hero relative overflow-hidden rounded-3xl bg-brand-950 p-7 text-white shadow-hero">
+    <section
+      onClick={() =>
+        openPrediction({
+          id: HERO_MARKET_ID,
+          title: market.headline,
+          category: market.category,
+          probability,
+        })
+      }
+      className="anim-hero relative cursor-pointer overflow-hidden rounded-3xl bg-brand-950 p-7 text-white shadow-hero"
+    >
       {/* Soft glow behind the chart, subtle depth on the left. */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_460px_at_80%_-10%,rgba(106,82,212,0.4),transparent_70%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(140deg,rgba(39,24,126,0.55),transparent_55%)]" />
@@ -64,7 +85,7 @@ export function HeroCard({ market }: HeroCardProps) {
 
           <div className="mt-5 flex items-end gap-4">
             <CountUp
-              value={market.probability}
+              value={probability}
               suffix="%"
               className="text-[64px] leading-none font-bold tracking-tight"
             />
@@ -73,7 +94,7 @@ export function HeroCard({ market }: HeroCardProps) {
                 {market.outcome}
               </p>
               <TrendDelta
-                delta={market.delta}
+                delta={delta}
                 window={market.deltaWindow}
                 onDark
                 className="mt-1 text-sm"
@@ -107,7 +128,7 @@ export function HeroCard({ market }: HeroCardProps) {
           </div>
         </div>
 
-        <HeroChart series={market.series} probability={market.probability} />
+        <HeroChart series={series} probability={probability} />
       </div>
     </section>
   );

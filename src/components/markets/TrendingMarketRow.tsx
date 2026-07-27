@@ -4,6 +4,11 @@ import { Card } from "@/components/ui/Card";
 import { Sparkline } from "@/components/ui/Sparkline";
 import { StatusChip } from "@/components/ui/StatusChip";
 import { TrendDelta } from "@/components/ui/TrendDelta";
+import { bookmarksStore, isBookmarked, toggleBookmark } from "@/engine/bookmarks";
+import { liveDelta, marketsStore } from "@/engine/markets";
+import { useStore } from "@/engine/store";
+import { showToast } from "@/engine/toasts";
+import { openPrediction } from "@/engine/ui";
 import type { MarketIcon, TrendingMarket } from "@/types";
 
 interface TrendingMarketRowProps {
@@ -32,9 +37,28 @@ function Metric({ value, label }: MetricProps) {
 
 export function TrendingMarketRow({ market }: TrendingMarketRowProps) {
   const { classes, icon: Icon } = iconStyles[market.icon];
+  const live = useStore(marketsStore)[market.id];
+  const bookmarks = useStore(bookmarksStore);
+
+  const probability = live?.probability ?? market.probability;
+  const delta = live ? liveDelta(live) : market.delta;
+  const spark = live && live.spark.length > 0 ? live.spark : market.sparkline;
+  const bookmarked = isBookmarked(bookmarks, market.id);
+
+  const openTradeModal = () =>
+    openPrediction({
+      id: market.id,
+      title: market.title,
+      category: market.category,
+      probability,
+    });
 
   return (
-    <Card hoverable className="flex items-center gap-5 py-3.5 pr-3 pl-4">
+    <Card
+      hoverable
+      className="flex cursor-pointer items-center gap-5 py-3.5 pr-3 pl-4"
+      onClick={openTradeModal}
+    >
       <span
         className={cn(
           "flex size-11 shrink-0 items-center justify-center rounded-xl",
@@ -60,13 +84,13 @@ export function TrendingMarketRow({ market }: TrendingMarketRowProps) {
 
       <div className="w-16 shrink-0 text-center">
         <p className="text-[22px] leading-tight font-bold text-slate-900">
-          {market.probability}%
+          {probability}%
         </p>
-        <TrendDelta delta={market.delta} className="justify-center text-xs" />
+        <TrendDelta delta={delta} className="justify-center text-xs" />
       </div>
 
       <div className="shrink-0">
-        <Sparkline data={market.sparkline} direction={market.delta.direction} />
+        <Sparkline data={spark} direction={delta.direction} />
       </div>
 
       <Metric value={market.volume} label="Volume" />
@@ -74,10 +98,25 @@ export function TrendingMarketRow({ market }: TrendingMarketRowProps) {
 
       <button
         type="button"
-        aria-label={`Bookmark "${market.title}"`}
-        className="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-slate-300 transition-colors hover:bg-brand-50 hover:text-brand-700"
+        aria-label={
+          bookmarked
+            ? `Remove bookmark for "${market.title}"`
+            : `Bookmark "${market.title}"`
+        }
+        aria-pressed={bookmarked}
+        onClick={(event) => {
+          event.stopPropagation();
+          const added = toggleBookmark(market.id);
+          showToast(added ? "Added to bookmarks" : "Removed from bookmarks", "info");
+        }}
+        className={cn(
+          "flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-lg transition-colors",
+          bookmarked
+            ? "text-brand-700 hover:bg-brand-50"
+            : "text-slate-300 hover:bg-brand-50 hover:text-brand-700",
+        )}
       >
-        <Bookmark className="size-[18px]" />
+        <Bookmark className={cn("size-[18px]", bookmarked && "fill-current")} />
       </button>
     </Card>
   );

@@ -1,6 +1,10 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import gsap from "gsap";
+import { CreateMarketModal } from "@/components/common/CreateMarketModal";
+import { PredictionModal } from "@/components/common/PredictionModal";
+import { ToastHost } from "@/components/common/ToastHost";
+import { startMarketSimulation } from "@/engine/markets";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 
@@ -15,6 +19,9 @@ function ScrollToTop() {
 /** App chrome: navbar + sidebar around the routed page. */
 export function AppLayout() {
   const rootRef = useRef<HTMLDivElement>(null);
+
+  // Client-side liveness: probabilities drift subtly while the app is open.
+  useEffect(() => startMarketSimulation(), []);
 
   useLayoutEffect(() => {
     let timeline: gsap.core.Timeline | undefined;
@@ -60,6 +67,9 @@ export function AppLayout() {
         <Sidebar />
         <Outlet />
       </div>
+      <PredictionModal />
+      <CreateMarketModal />
+      <ToastHost />
     </div>
   );
 }

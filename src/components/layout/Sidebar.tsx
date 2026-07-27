@@ -14,6 +14,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { homeData } from "@/data";
+import { notificationsStore, unreadCount } from "@/engine/notifications";
+import { useStore } from "@/engine/store";
 import { SidebarItem } from "./SidebarItem";
 import { SidebarSection } from "./SidebarSection";
 import { UserCard } from "./UserCard";
@@ -22,7 +24,8 @@ interface NavEntry {
   icon: LucideIcon;
   label: string;
   to?: string;
-  badge?: number;
+  /** Shows the live unread-notifications badge. */
+  notificationBadge?: boolean;
 }
 
 interface NavSection {
@@ -34,7 +37,7 @@ const navSections: NavSection[] = [
   {
     title: "Discover",
     items: [
-      { icon: Home, label: "Home", to: "/" },
+      { icon: Home, label: "Home", to: "/dashboard" },
       { icon: Compass, label: "Explore", to: "/explore" },
       { icon: Calendar, label: "Events", to: "/events" },
       { icon: LayoutGrid, label: "Categories", to: "/categories" },
@@ -44,16 +47,16 @@ const navSections: NavSection[] = [
   {
     title: "Personal",
     items: [
-      { icon: ChartPie, label: "Portfolio" },
+      { icon: ChartPie, label: "Portfolio", to: "/portfolio" },
       { icon: Star, label: "Watchlist" },
-      { icon: Bookmark, label: "Bookmarks" },
+      { icon: Bookmark, label: "Bookmarks", to: "/bookmarks" },
     ],
   },
   {
     title: "Social",
     items: [
       { icon: Trophy, label: "Leaderboards" },
-      { icon: Bell, label: "Notifications", badge: homeData.user.notifications },
+      { icon: Bell, label: "Notifications", notificationBadge: true },
     ],
   },
   {
@@ -68,13 +71,19 @@ const navSections: NavSection[] = [
 
 /** Permanent 224px navigation rail below the navbar. */
 export function Sidebar() {
+  const unread = unreadCount(useStore(notificationsStore));
+
   return (
     <aside className="anim-sidebar sticky top-18 flex h-[calc(100vh-4.5rem)] w-56 shrink-0 flex-col border-r border-slate-200/80 bg-white">
       <div className="no-scrollbar flex-1 overflow-y-auto px-3 pt-5">
         {navSections.map((section) => (
           <SidebarSection key={section.title} title={section.title}>
-            {section.items.map((item) => (
-              <SidebarItem key={item.label} {...item} />
+            {section.items.map(({ notificationBadge, ...item }) => (
+              <SidebarItem
+                key={item.label}
+                {...item}
+                badge={notificationBadge ? unread : undefined}
+              />
             ))}
           </SidebarSection>
         ))}

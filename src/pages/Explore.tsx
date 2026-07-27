@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { BrowseCategories } from "@/components/explore/BrowseCategories";
 import { BrowseEntities } from "@/components/explore/BrowseEntities";
 import { DiscoveryCard } from "@/components/explore/DiscoveryCard";
@@ -17,6 +17,7 @@ import { categories, exploreData } from "@/data";
 export function ExplorePage() {
   const rootRef = useRef<HTMLDivElement>(null);
   usePageReveal(rootRef);
+  const [category, setCategory] = useState("all");
 
   return (
     <div
@@ -36,11 +37,15 @@ export function ExplorePage() {
         />
 
         <div className="anim-rise">
-          <CategoryPills categories={categories} />
+          <CategoryPills
+            categories={categories}
+            value={category}
+            onChange={setCategory}
+          />
         </div>
 
-        <EventClustersSection />
-        <TrendingMarketsSection />
+        <EventClustersSection categoryFilter={category} />
+        <TrendingMarketsSection categoryFilter={category} />
 
         <BrowseEntities entities={exploreData.entities} />
         <BrowseCategories categories={exploreData.categories} />

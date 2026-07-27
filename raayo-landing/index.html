@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAAYO — Price the Future</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --accent: #8b5cf6;
+      --accent-bright: #a78bfa;
+      --accent-dim: rgba(139, 92, 246, 0.25);
+      --accent-glow: rgba(139, 92, 246, 0.12);
+      --light: rgba(255, 255, 255, 0.7);
+      --light-dim: rgba(255, 255, 255, 0.3);
+      --light-faint: rgba(255, 255, 255, 0.08);
+      --bg-dark: #040610;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg-dark);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+    }
+
+    /* ── Canvas background ── */
+    canvas {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 0 !important;
+    }
+
+    /* ── Overlay to darken/tint the 3D scene ── */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      background: radial-gradient(ellipse at 50% 50%, rgba(4, 6, 16, 0) 0%, rgba(4, 6, 16, 0.25) 40%, rgba(4, 6, 16, 0.85) 90%);
+      pointer-events: none;
+    }
+
+    /* ── Top bar ── */
+    .top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 48px;
+      pointer-events: none;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #fff;
+      opacity: 0.9;
+      pointer-events: auto;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav li {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #fff;
+      opacity: 0.45;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: opacity 0.3s, color 0.3s;
+    }
+
+    .nav li a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav li:hover {
+      opacity: 1;
+      color: #fff;
+    }
+
+    .nav li.nav-cta {
+      background: var(--accent);
+      color: #fff;
+      opacity: 1;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    }
+
+    .nav li.nav-cta:hover {
+      background: #7c3aed;
+      transform: translateY(-1px);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+    }
+
+    /* ── Center hero ── */
+    .hero {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      text-align: center;
+      width: 100%;
+      max-width: 900px;
+      padding: 0 24px;
+    }
+
+    .hero-content-box {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .hero-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      opacity: 0.95;
+      margin-bottom: 16px;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      min-height: 16px;
+    }
+
+    .hero-word {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 84px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #fff;
+      line-height: 1;
+      letter-spacing: 2px;
+      text-shadow: 0 0 60px rgba(139, 92, 246, 0.4), 0 0 120px rgba(139, 92, 246, 0.15);
+    }
+
+    .hero-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.2px;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 22px auto 0 auto;
+      line-height: 1.5;
+      max-width: 600px;
+    }
+
+    /* ── Hero Metrics Row ── */
+    .hero-metrics {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 36px;
+      margin-top: 36px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value .live-indicator {
+      font-size: 13px;
+      color: #4ade80;
+      margin-left: 3px;
+      transition: opacity 0.3s;
+    }
+
+    .metric-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 4px;
+    }
+
+    /* ── CTA Buttons ── */
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 36px;
+    }
+
+    .btn-primary {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--accent);
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      pointer-events: auto;
+    }
+
+    .btn-primary:hover {
+      background: #7c3aed;
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(139, 92, 246, 0.65);
+    }
+
+    .btn-secondary {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: border-color 0.3s, color 0.3s, transform 0.2s;
+      pointer-events: auto;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(255, 255, 255, 0.6);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ── Left panel (Terminal Style) ── */
+    .panel-left {
+      position: absolute;
+      left: 48px;
+      bottom: 65px;
+      z-index: 2;
+      pointer-events: none;
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+    }
+
+    .panel-left .vertical-label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 9px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #fff;
+      opacity: 0.25;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .panel-left .vertical-label::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: var(--accent-bright);
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .panel-left .coords {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-family: 'Space Grotesk', monospace;
+    }
+
+    .panel-left .coords span {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: #fff;
+      opacity: 0.3;
+    }
+
+    .panel-left .coords .accent {
+      color: var(--accent-bright);
+      opacity: 0.9;
+    }
+
+    .panel-left .coords .trend-bullish {
+      color: #4ade80;
+      opacity: 0.9;
+    }
+
+    /* ── Social panel ── */
+    .social-panel {
+      position: absolute;
+      right: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .social-panel .social-link {
+      color: #fff;
+      opacity: 0.35;
+      transition: opacity 0.3s, color 0.3s, transform 0.3s;
+      display: flex;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+
+    .social-panel .social-link:hover {
+      opacity: 1;
+      color: var(--accent-bright);
+      transform: translateY(-2px);
+    }
+
+    .social-panel svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* ── Bottom Bar & Question Marquee Ticker ── */
+    .bottom-bar-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Live Ticker Marquee */
+    .ticker-wrapper {
+      width: 100%;
+      background: rgba(4, 6, 16, 0.75);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 10px 0;
+      backdrop-filter: blur(8px);
+      pointer-events: auto;
+    }
+
+    .ticker-content {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 32s linear infinite;
+    }
+
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      margin-right: 40px;
+    }
+
+    .ticker-item .pct {
+      color: var(--accent-bright);
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    .ticker-item .dot {
+      color: rgba(255, 255, 255, 0.2);
+      margin-right: 14px;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Bottom Sub-bar */
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 48px;
+      pointer-events: none;
+    }
+
+    .bottom-left, .bottom-center, .bottom-right {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .bottom-right a {
+      color: rgba(255, 255, 255, 0.3);
+      text-decoration: none;
+      pointer-events: auto;
+      transition: color 0.3s;
+    }
+
+    .bottom-right a:hover {
+      color: var(--accent-bright);
+    }
+
+    /* ── Corner decorations ── */
+    .corner {
+      position: absolute;
+      z-index: 2;
+      width: 30px;
+      height: 30px;
+      pointer-events: none;
+    }
+
+    .corner::before,
+    .corner::after {
+      content: '';
+      position: absolute;
+      background: var(--accent-bright);
+      opacity: 0.25;
+    }
+
+    .corner--tl { top: 24px; left: 24px; }
+    .corner--tl::before { top: 0; left: 0; width: 20px; height: 1px; }
+    .corner--tl::after { top: 0; left: 0; width: 1px; height: 20px; }
+
+    .corner--tr { top: 24px; right: 24px; }
+    .corner--tr::before { top: 0; right: 0; width: 20px; height: 1px; }
+    .corner--tr::after { top: 0; right: 0; width: 1px; height: 20px; }
+
+    .corner--bl { bottom: 24px; left: 24px; }
+    .corner--bl::before { bottom: 0; left: 0; width: 20px; height: 1px; }
+    .corner--bl::after { bottom: 0; left: 0; width: 1px; height: 20px; }
+
+    .corner--br { bottom: 24px; right: 24px; }
+    .corner--br::before { bottom: 0; right: 0; width: 20px; height: 1px; }
+    .corner--br::after { bottom: 0; right: 0; width: 1px; height: 20px; }
+
+    /* ── Screen 2: Fixed Fullscreen Overlay (Stays 5s or Dismisses on Tap/Click) ── */
+    .text-section {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(4, 6, 16, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 60px 48px;
+      cursor: pointer;
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+    }
+
+    .text-section.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: scale(1.03);
+    }
+
+    .screen2-container {
+      max-width: 900px;
+      text-align: center;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .screen2-badge {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      opacity: 0.9;
+      margin-bottom: 16px;
+    }
+
+    .screen2-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 56px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      text-transform: none;
+      color: #fff;
+    }
+
+    .screen2-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.75);
+      max-width: 620px;
+      margin: 0 auto 48px auto;
+    }
+
+    /* 3 Minimal Feature Blocks (No cards, pure typography) */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      width: 100%;
+      text-align: left;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 40px;
+    }
+
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feature-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .feature-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .dismiss-hint {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      margin-top: 36px;
+      opacity: 0.7;
+      animation: pulseHint 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseHint {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.95; }
+    }
+
+    /* ── Responsive Rules ── */
+    @media (max-width: 900px) {
+      .panel-left,
+      .social-panel {
+        display: none;
+      }
+
+      .top-bar {
+        padding: 24px;
+      }
+
+      .hero-word {
+        font-size: 54px;
+        letter-spacing: 4px;
+      }
+
+      .hero-metrics {
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .screen2-title {
+        font-size: 38px;
+      }
+
+      .bottom-bar {
+        flex-direction: column;
+        gap: 8px;
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Tint overlay -->
+  <div class="overlay"></div>
+
+  <div class="hero-wrapper">
+    <!-- Corner brackets -->
+    <div class="corner corner--tl"></div>
+    <div class="corner corner--tr"></div>
+    <div class="corner corner--bl"></div>
+    <div class="corner corner--br"></div>
+
+    <!-- Top navigation -->
+    <header class="top-bar">
+      <div class="logo"><a href="/dashboard" target="_top" style="color: inherit; text-decoration: none;">RAAYO</a></div>
+      <ul class="nav">
+        <li><a href="/dashboard" target="_top">Markets</a></li>
+        <li><a href="/dashboard" target="_top">Learn</a></li>
+        <li><a href="/dashboard" target="_top">Changelog</a></li>
+        <li class="nav-cta"><a href="/dashboard" target="_top" style="color: inherit; text-decoration: none;">Try Raayo Now</a></li>
+      </ul>
+    </header>
+
+    <!-- Center hero -->
+    <div class="hero">
+      <div class="hero-content-box">
+        <div class="hero-label" id="dynamic-eyebrow">INDIA'S PULSE.</div>
+        <div class="hero-word">RAAYO</div>
+        <div class="hero-sub">Price the future before everyone else.</div>
+        
+        <!-- Live Statistics Grid -->
+        <div class="hero-metrics">
+          <div class="metric-item">
+            <span class="metric-value" data-target="1248">0</span>
+            <span class="metric-label">Active Markets</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-value">₹2.4Cr</span>
+            <span class="metric-label">Volume Today</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-value" data-target="18431">0</span>
+            <span class="metric-label">Predictions Made</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-value" id="live-pct-container">
+              <span id="pct-num">97%</span><span class="live-indicator" id="pct-arrow"></span>
+            </span>
+            <span class="metric-label">Markets Resolved</span>
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="hero-actions">
+          <a href="/dashboard" target="_top" class="btn-primary">Try Raayo Now &rarr;</a>
+          <a href="/dashboard" target="_top" class="btn-secondary">Changelog</a>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Social Icons Panel (Right) -->
+    <div class="social-panel">
+      <a href="#" class="social-link" title="X (Twitter)">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="#" class="social-link" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="#" class="social-link" title="Discord">
+        <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      </a>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar-container">
+      <div class="bottom-bar">
+        <div class="bottom-left">BUILT FOR INDIA. BACKED BY DATA.</div>
+        <div class="bottom-center">REAL-TIME MARKETS. COMMUNITY INSIGHTS. TRADE SMART. STAY AHEAD.</div>
+        <div class="bottom-right">VER 1.0.0 | <a href="#">CHANGELOG</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 2: Intro Overlay (Auto-dismisses in 5s or on tap/click) -->
+  <section class="text-section" id="intro-overlay">
+    <div class="screen2-container">
+      <div class="screen2-badge">CONSENSUS FORMS.</div>
+      <h2 class="screen2-title">Every prediction deserves<br>a price.</h2>
+      <p class="screen2-body">Every market is a live reflection of collective belief. From elections and cricket to finance and technology, Raayo lets you trade on probabilities instead of opinions.</p>
+      
+      <!-- 3 Minimal Feature Blocks -->
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="feature-title">Live Markets</div>
+          <div class="feature-desc">Trade continuously updated prediction markets powered by thousands of participants.</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-title">Collective Intelligence</div>
+          <div class="feature-desc">Watch probabilities evolve in real time as information enters the market.</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-title">Fast Resolution</div>
+          <div class="feature-desc">Markets settle transparently using trusted public sources and verified outcomes.</div>
+        </div>
+      </div>
+
+      <div class="dismiss-hint">Tap anywhere or wait 5s to enter &rarr;</div>
+    </div>
+  </section>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.183.2/build/three.webgpu.js",
+      "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.183.2/build/three.webgpu.js",
+      "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.183.2/build/three.tsl.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.183.2/examples/jsm/",
+      "stats-gl": "https://cdn.jsdelivr.net/npm/stats-gl@4.0.2/dist/main.js",
+      "lil-gui": "https://cdn.jsdelivr.net/npm/lil-gui@0.21.0/dist/lil-gui.esm.js"
+    }
+  }
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Overlay Dismissal (5 Seconds Timer OR Immediate Tap/Click/Keypress)
+      const overlay = document.getElementById('intro-overlay');
+      let isDismissed = false;
+
+      function dismissOverlay() {
+        if (isDismissed || !overlay) return;
+        isDismissed = true;
+        overlay.classList.add('hidden');
+      }
+
+      // Auto dismiss after 5 seconds
+      const autoDismissTimer = setTimeout(dismissOverlay, 5000);
+
+      // Instant dismiss on tap or click anywhere
+      window.addEventListener('click', () => {
+        clearTimeout(autoDismissTimer);
+        dismissOverlay();
+      });
+
+      window.addEventListener('touchstart', () => {
+        clearTimeout(autoDismissTimer);
+        dismissOverlay();
+      });
+
+      window.addEventListener('keydown', (e) => {
+        clearTimeout(autoDismissTimer);
+        dismissOverlay();
+      });
+
+      // Navigation CTA handler for Try Raayo Now buttons
+      document.querySelectorAll('.nav-cta, .btn-primary').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (window.top) {
+            window.top.location.href = '/dashboard';
+          } else {
+            window.location.href = '/dashboard';
+          }
+        });
+      });
+
+      // 2. Animated number counters on load
+      document.querySelectorAll('.metric-value[data-target]').forEach(counterEl => {
+        const target = parseInt(counterEl.getAttribute('data-target'), 10);
+        let start = 0;
+        const duration = 1800;
+        const startTime = performance.now();
+
+        function updateCounter(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+          const currentCount = Math.floor(easeProgress * target);
+          counterEl.textContent = currentCount.toLocaleString();
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          }
+        }
+        requestAnimationFrame(updateCounter);
+      });
+
+      // 3. Micro Live Probability Fluctuation
+      const pctNum = document.getElementById('pct-num');
+      const pctArrow = document.getElementById('pct-arrow');
+      const pctStates = [
+        { val: '97%', arrow: '↑' },
+        { val: '98%', arrow: '↑' },
+        { val: '97%', arrow: '' },
+        { val: '96%', arrow: '↓' },
+        { val: '97%', arrow: '↑' }
+      ];
+      let pctIndex = 0;
+
+      setInterval(() => {
+        pctIndex = (pctIndex + 1) % pctStates.length;
+        if (pctNum) pctNum.textContent = pctStates[pctIndex].val;
+        if (pctArrow) {
+          pctArrow.textContent = pctStates[pctIndex].arrow;
+          pctArrow.style.color = pctStates[pctIndex].arrow === '↓' ? '#f87171' : '#4ade80';
+        }
+      }, 3200);
+
+      // 4. Dynamic Eyebrow Shift on Mouse Movement over 3D sphere field
+      const eyebrow = document.getElementById('dynamic-eyebrow');
+      let mouseTimer;
+
+      window.addEventListener('mousemove', () => {
+        if (eyebrow && eyebrow.textContent !== 'OPINIONS MOVE. MARKETS FOLLOW.') {
+          eyebrow.style.opacity = '0';
+          setTimeout(() => {
+            eyebrow.textContent = 'OPINIONS MOVE. MARKETS FOLLOW.';
+            eyebrow.style.opacity = '0.95';
+          }, 150);
+        }
+        clearTimeout(mouseTimer);
+        mouseTimer = setTimeout(() => {
+          if (eyebrow && eyebrow.textContent !== "INDIA'S PULSE.") {
+            eyebrow.style.opacity = '0';
+            setTimeout(() => {
+              eyebrow.textContent = "INDIA'S PULSE.";
+              eyebrow.style.opacity = '0.95';
+            }, 150);
+          }
+        }, 2400);
+      });
+    });
+  </script>
+
+  <script type="module" src="scene.js"></script>
+
+</body>
+
+</html>

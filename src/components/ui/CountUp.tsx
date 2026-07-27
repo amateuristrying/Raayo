@@ -15,7 +15,10 @@ function format(value: number, grouped: boolean, suffix: string): string {
   return (grouped ? rounded.toLocaleString("en-IN") : String(rounded)) + suffix;
 }
 
-/** Animates a number from 0 to `value` on mount using GSAP. */
+/**
+ * Animates the number to `value` using GSAP — from 0 on mount, and from the
+ * previously displayed value on later changes (e.g. live balance updates).
+ */
 export function CountUp({
   value,
   suffix = "",
@@ -24,14 +27,16 @@ export function CountUp({
   className,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
+  const displayed = useRef(0);
 
   useEffect(() => {
-    const counter = { current: 0 };
+    const counter = { current: displayed.current };
     const tween = gsap.to(counter, {
       current: value,
       duration,
       ease: "power2.out",
       onUpdate: () => {
+        displayed.current = counter.current;
         if (ref.current) {
           ref.current.textContent = format(counter.current, grouped, suffix);
         }
@@ -54,7 +59,7 @@ export function CountUp({
 
   return (
     <span ref={ref} className={className}>
-      {format(0, grouped, suffix)}
+      {format(displayed.current, grouped, suffix)}
     </span>
   );
 }
