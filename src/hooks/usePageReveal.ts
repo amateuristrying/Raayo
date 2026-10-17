@@ -84,7 +84,7 @@ export function usePageReveal(rootRef: RefObject<HTMLElement | null>) {
           const elements = Array.from(root.querySelectorAll(step.selector));
           const visible = elements.filter((element) => element.getBoundingClientRect().top < window.innerHeight);
           const belowFold = elements.filter((element) => !visible.includes(element));
-          timeline.fromTo(
+          if (visible.length > 0) timeline.fromTo(
             visible,
             {
               autoAlpha: 0,
