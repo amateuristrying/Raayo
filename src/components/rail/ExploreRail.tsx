@@ -1,4 +1,5 @@
 import { Check, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/cn";
 import { EmojiTile } from "@/components/ui/EmojiTile";
 import { OutcomeChip } from "@/components/ui/OutcomeChip";
@@ -122,13 +123,15 @@ function RecentlyViewedCard({ items }: { items: ViewedMarket[] }) {
 }
 
 function SavedSearchesCard({ items }: { items: string[] }) {
+  const navigate = useNavigate();
   return (
-    <RailCard variant="title" title="Saved Searches" actionLabel="View all">
+    <RailCard variant="title" title="Suggested Searches">
       <div className="flex flex-wrap gap-2">
         {items.map((search) => (
           <button
             key={search}
             type="button"
+            onClick={() => navigate(`/search?${new URLSearchParams({ q: search })}`)}
             className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition-colors hover:border-brand-200 hover:text-brand-700"
           >
             {search}

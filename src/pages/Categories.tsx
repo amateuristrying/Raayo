@@ -20,7 +20,7 @@ export function CategoriesPage() {
       <main className="flex min-w-0 flex-1 flex-col gap-6">
         <PageHero
           title="Categories"
-          subtitle="Browse India's predictions by topic. Every category contains its own events, entities, markets and historical archive."
+          subtitle="Start with what matters to you. Explore the events, people and probabilities behind each subject."
           metrics={categoriesPageData.metrics}
           wideSubtitle
         />

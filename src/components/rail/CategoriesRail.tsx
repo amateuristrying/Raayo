@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { EmojiTile } from "@/components/ui/EmojiTile";
 import { EventStatusBadge } from "@/components/ui/EventStatusBadge";
@@ -116,8 +116,8 @@ function AiSummaryCard({
     <Card className="p-4">
       <SectionHeader
         variant="title"
-        title="AI Summary"
-        meta={`Updated ${summary.updated}`}
+        title="Category Briefing"
+        meta="Sample editorial summary"
         leading={
           <span className="flex size-7 items-center justify-center rounded-lg bg-brand-700 text-white">
             <Sparkles className="size-4" />
@@ -127,13 +127,6 @@ function AiSummaryCard({
       <p className="mt-3 text-[13px] leading-relaxed text-slate-600">
         {summary.text}
       </p>
-      <button
-        type="button"
-        className="mt-3.5 flex h-10 w-full cursor-pointer items-center justify-between rounded-xl bg-slate-100 px-3.5 text-[13px] font-semibold text-slate-700 transition-colors hover:bg-slate-200/70"
-      >
-        Read full analysis
-        <ArrowRight className="size-4" />
-      </button>
     </Card>
   );
 }

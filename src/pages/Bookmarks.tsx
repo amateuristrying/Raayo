@@ -4,8 +4,8 @@ import { PageHero } from "@/components/common/PageHero";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { TrendingMarketRow } from "@/components/markets/TrendingMarketRow";
-import { trendingMarkets } from "@/data";
+import { DiscoveryResult } from "@/components/common/DiscoveryResult";
+import { browseAll } from "@/engine/search";
 import { bookmarksStore } from "@/engine/bookmarks";
 import { followsStore } from "@/engine/follows";
 import { useStore } from "@/engine/store";
@@ -19,7 +19,7 @@ export function BookmarksPage() {
 
   const bookmarks = useStore(bookmarksStore);
   const follows = useStore(followsStore);
-  const saved = trendingMarkets.filter((market) => bookmarks.includes(market.id));
+  const saved = browseAll().filter((market) => market.type === "Market" && bookmarks.includes(market.id));
 
   const metrics: PageMetric[] = [
     {
@@ -44,7 +44,7 @@ export function BookmarksPage() {
       <main className="flex min-w-0 flex-1 flex-col gap-6">
         <PageHero
           title="Bookmarks"
-          subtitle="Markets you're keeping an eye on."
+          subtitle="Questions worth coming back to. Your saved markets, all in one place."
           metrics={metrics}
         />
 
@@ -52,14 +52,14 @@ export function BookmarksPage() {
           <SectionHeader title="Saved Markets" className="anim-rise mb-3" />
           <div className="flex flex-col gap-3">
             {saved.map((market) => (
-              <TrendingMarketRow key={market.id} market={market} />
+              <DiscoveryResult key={market.id} result={market} />
             ))}
             {saved.length === 0 && (
               <Card className="anim-item flex flex-col items-center gap-3 p-10 text-center">
                 <p className="text-sm text-slate-400">
                   Nothing saved yet — tap the bookmark icon on any market.
                 </p>
-                <Button size="sm" onClick={() => navigate("/")}>
+                <Button size="sm" onClick={() => navigate("/search?type=Market")}>
                   Browse trending markets
                 </Button>
               </Card>

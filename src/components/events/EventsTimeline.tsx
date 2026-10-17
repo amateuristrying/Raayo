@@ -69,7 +69,7 @@ function TimelineSectionView({ section }: { section: TimelineSection }) {
   const isToday = section.id === "today";
   return (
     <div
-      className="group relative flex min-w-0 cursor-pointer flex-col items-center rounded-xl px-2 pt-2 pb-1 transition-colors hover:bg-slate-50/80"
+      className="group relative flex min-w-24 flex-col items-center rounded-xl px-2 pt-2 pb-1"
       style={{ flexGrow: section.grow ?? 1, flexBasis: 0 }}
     >
       <p className="text-[10px] font-bold tracking-[0.08em] whitespace-nowrap text-slate-700 uppercase">
@@ -108,8 +108,8 @@ function TimelineSectionView({ section }: { section: TimelineSection }) {
 /** Signature horizontal timeline organizing events by time. */
 export function EventsTimeline({ sections }: EventsTimelineProps) {
   return (
-    <Card className="anim-rise relative px-5 pt-4 pb-10">
-      <div className="flex items-stretch">
+    <Card className="anim-rise relative overflow-x-auto px-5 pt-4 pb-10">
+      <div className="flex min-w-[760px] items-stretch">
         {sections.map((section, index) => (
           <Fragment key={section.id}>
             {index > 0 && (

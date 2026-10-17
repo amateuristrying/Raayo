@@ -20,7 +20,7 @@ const HEADERS = [
 /** Side-by-side category statistics with tiny sparklines. */
 export function ComparisonTable({ rows }: ComparisonTableProps) {
   return (
-    <Card className="anim-rise min-w-0 p-4">
+    <Card className="anim-rise min-w-0 overflow-x-auto p-4">
       <SectionHeader
         variant="title"
         title="Category Comparison"

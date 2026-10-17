@@ -32,7 +32,7 @@ export function HeroChart({ series, probability }: HeroChartProps) {
 
   // Draw-in animation on mount only; live data updates must not redraw the
   // whole line every tick.
-  const [animate, setAnimate] = useState(true);
+  const [animate, setAnimate] = useState(() => !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   useEffect(() => {
     const timer = setTimeout(() => setAnimate(false), 1800);
     return () => clearTimeout(timer);

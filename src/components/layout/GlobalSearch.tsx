@@ -4,14 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Search, TrendingUp } from "lucide-react";
 import { exploreData } from "@/data";
 import { searchAll, type SearchResult } from "@/engine/search";
-import { openPrediction } from "@/engine/ui";
 import { useClickOutside } from "@/hooks/useClickOutside";
 
-const typeRoutes: Record<Exclude<SearchResult["type"], "Market">, string> = {
-  Event: "/events",
-  Entity: "/explore",
-  Category: "/categories",
-};
 
 function ResultRow({
   result,
@@ -84,16 +78,7 @@ export function GlobalSearch() {
 
   const choose = (result: SearchResult) => {
     close();
-    if (result.type === "Market") {
-      openPrediction({
-        id: result.id,
-        title: result.title,
-        category: result.subtitle,
-        probability: result.probability ?? 50,
-      });
-    } else {
-      navigate(typeRoutes[result.type]);
-    }
+    navigate(`/search?${new URLSearchParams({ q: result.title, type: result.type })}`);
   };
 
   return (
@@ -111,9 +96,13 @@ export function GlobalSearch() {
           onFocus={() => setOpen(true)}
           onKeyDown={(event) => {
             if (event.key === "Escape") close();
-            if (event.key === "Enter" && results[0]) choose(results[0]);
+            if (event.key === "Enter") {
+              navigate(`/search?${new URLSearchParams({ q: query.trim() })}`);
+              close();
+            }
           }}
           placeholder="Search markets, events, people, companies, teams..."
+          aria-label="Search Raayo"
           className="w-full bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
         />
         <kbd className="rounded-md border border-slate-200 bg-white px-1.5 py-0.5 text-[11px] font-medium text-slate-400">

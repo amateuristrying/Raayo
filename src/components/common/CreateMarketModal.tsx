@@ -35,7 +35,7 @@ function CreateMarketForm() {
   const invalid =
     question.trim().length < 10 ||
     event.trim().length === 0 ||
-    closesOn === "" ||
+    closesOn <= new Date().toLocaleDateString("en-CA") ||
     resolutionSource.trim().length === 0;
 
   const submit = () => {
@@ -46,7 +46,7 @@ function CreateMarketForm() {
       closesOn,
       resolutionSource: resolutionSource.trim(),
     });
-    showToast("Market submitted for review");
+    showToast("Draft saved locally. View it in Portfolio > My markets.");
     closeCreateMarket();
   };
 
@@ -100,8 +100,7 @@ function CreateMarketForm() {
         />
       </Field>
       <p className="text-[11px] leading-relaxed text-slate-400">
-        Every market names an authoritative source at creation. Raayo verifies
-        outcomes against it before settling predictions.
+        Saved on this device only. No reviewer or settlement service is connected in this preview.
       </p>
       <Button className="w-full" disabled={invalid} onClick={submit}>
         Submit for Review

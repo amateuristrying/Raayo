@@ -24,6 +24,7 @@ export function AppLayout() {
   useEffect(() => startMarketSimulation(), []);
 
   useLayoutEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let timeline: gsap.core.Timeline | undefined;
     const ctx = gsap.context(() => {
       // fromTo with explicit end values + clearProps: from() captures the
@@ -65,7 +66,10 @@ export function AppLayout() {
       <Navbar />
       <div className="flex items-start">
         <Sidebar />
-        <Outlet />
+        <div className="app-content min-w-0 flex-1">
+          <div className="demo-notice border-b border-slate-200 bg-white px-6 py-2 text-xs text-slate-500">Preview data · Simulated probabilities · Virtual points only</div>
+          <Outlet />
+        </div>
       </div>
       <PredictionModal />
       <CreateMarketModal />

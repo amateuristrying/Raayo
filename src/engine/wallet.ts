@@ -43,7 +43,7 @@ function transaction(label: string, amount: number): WalletTransaction {
 export function spendPoints(amount: number, label: string): boolean {
   let ok = false;
   walletStore.set((prev) => {
-    if (amount <= 0 || prev.balance < amount) return prev;
+    if (!Number.isFinite(amount) || amount <= 0 || prev.balance < amount) return prev;
     ok = true;
     return {
       balance: prev.balance - amount,
@@ -54,7 +54,7 @@ export function spendPoints(amount: number, label: string): boolean {
 }
 
 export function addPoints(amount: number, label: string): void {
-  if (amount <= 0) return;
+  if (!Number.isFinite(amount) || amount <= 0) return;
   walletStore.set((prev) => ({
     balance: prev.balance + amount,
     transactions: [transaction(label, amount), ...prev.transactions].slice(0, 30),

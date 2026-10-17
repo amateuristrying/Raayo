@@ -14,7 +14,7 @@ const ResolvedArchiveCard = memo(function ResolvedArchiveCard({
   market: ResolvedCard;
 }) {
   return (
-    <Card hoverable className="anim-item cursor-pointer p-4">
+    <Card className="anim-item p-4">
       <div className="flex items-center justify-between gap-2">
         <OutcomeChip outcome={market.outcome} />
         <span className="text-sm font-bold text-slate-900">

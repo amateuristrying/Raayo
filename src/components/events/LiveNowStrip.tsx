@@ -13,7 +13,7 @@ const LiveEventCard = memo(function LiveEventCard({
   item: LiveEventData;
 }) {
   return (
-    <div className="anim-item relative flex cursor-pointer items-center gap-3 overflow-hidden rounded-xl bg-brand-950 p-3 pr-12 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover">
+    <div className="anim-item relative flex items-center gap-3 overflow-hidden rounded-xl bg-brand-950 p-3 pr-12 shadow-card">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(220px_90px_at_15%_0%,rgba(106,82,212,0.35),transparent_70%)]" />
       <EmojiTile
         emoji={item.emoji}

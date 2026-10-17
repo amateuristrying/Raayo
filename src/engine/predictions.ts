@@ -55,7 +55,7 @@ export function placePrediction(
   const live = marketsStore.get()[target.id];
   const probability = live?.probability ?? target.probability;
 
-  if (stake < MIN_STAKE) return false;
+  if (!live || !Number.isFinite(stake) || !Number.isInteger(stake) || stake < MIN_STAKE) return false;
   if (!spendPoints(stake, `Prediction placed · ${target.title}`)) return false;
 
   predictionsStore.set((prev) => [

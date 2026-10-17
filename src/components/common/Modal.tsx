@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/cn";
@@ -14,19 +14,51 @@ interface ModalProps {
 }
 
 /** Centered dialog on a dimmed backdrop; closes on Esc or backdrop click. */
-export function Modal({ open, onClose, label, children, className }: ModalProps) {
+export function Modal({
+  open,
+  onClose,
+  label,
+  children,
+  className,
+}: ModalProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
   useEffect(() => {
     if (!open) return;
+    const previous = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    const focusable = () =>
+      Array.from(
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          'button:not(:disabled), a[href], input, select, textarea, [tabindex="0"]',
+        ) ?? [],
+      );
+    focusable()[0]?.focus();
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") closeRef.current();
+      if (event.key === "Tab") {
+        const items = focusable();
+        const first = items[0];
+        const last = items.at(-1);
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        }
+        if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
+      previous?.focus();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 
@@ -41,7 +73,13 @@ export function Modal({ open, onClose, label, children, className }: ModalProps)
         className="animate-fade-in absolute inset-0 bg-brand-950/40 backdrop-blur-[2px]"
         onClick={onClose}
       />
-      <div className={cn("animate-pop-in relative w-full max-w-md", className)}>
+      <div
+        ref={dialogRef}
+        className={cn(
+          "animate-pop-in relative max-h-[90dvh] w-full max-w-md overflow-y-auto",
+          className,
+        )}
+      >
         <Card className="p-5 shadow-card-hover">
           <div className="flex items-center justify-between">
             <p className="text-[11px] font-bold tracking-[0.1em] text-slate-400 uppercase">

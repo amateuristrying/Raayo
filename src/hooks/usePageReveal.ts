@@ -1,5 +1,8 @@
 import { useLayoutEffect, type RefObject } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface RevealStep {
   selector: string;
@@ -70,7 +73,7 @@ const REVEAL_STEPS: RevealStep[] = [
 export function usePageReveal(rootRef: RefObject<HTMLElement | null>) {
   useLayoutEffect(() => {
     const root = rootRef.current;
-    if (!root) return;
+    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let timeline: gsap.core.Timeline | undefined;
     const ctx = gsap.context(() => {
@@ -78,8 +81,11 @@ export function usePageReveal(rootRef: RefObject<HTMLElement | null>) {
       for (const step of REVEAL_STEPS) {
         const probe = step.selector.replace(" > *", "");
         if (root.querySelector(probe)) {
+          const elements = Array.from(root.querySelectorAll(step.selector));
+          const visible = elements.filter((element) => element.getBoundingClientRect().top < window.innerHeight);
+          const belowFold = elements.filter((element) => !visible.includes(element));
           timeline.fromTo(
-            step.selector,
+            visible,
             {
               autoAlpha: 0,
               x: step.offset.x ?? 0,
@@ -96,6 +102,12 @@ export function usePageReveal(rootRef: RefObject<HTMLElement | null>) {
             },
             step.position,
           );
+          for (const element of belowFold) {
+            gsap.fromTo(element, { opacity: 0, y: 16 }, {
+              opacity: 1, y: 0, duration: 0.45, clearProps: "opacity,transform",
+              scrollTrigger: { trigger: element, start: "top 96%", once: true },
+            });
+          }
         }
       }
     }, rootRef);

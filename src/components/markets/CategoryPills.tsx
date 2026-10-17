@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import type { Category } from "@/types";
 import { CategoryChip } from "./CategoryChip";
@@ -12,11 +13,13 @@ interface CategoryPillsProps {
 
 /** Horizontal category filter with an overflow scroll affordance. */
 export function CategoryPills({ categories, value, onChange }: CategoryPillsProps) {
+  const navigate = useNavigate();
   const [internal, setInternal] = useState<string>(categories[0]?.id ?? "all");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const activeId = value ?? internal;
   const select = (id: string) => {
+    if (id === "following") { navigate("/watchlist"); return; }
     setInternal(id);
     onChange?.(id);
   };

@@ -66,7 +66,7 @@ export function HeroCard({ market }: HeroCardProps) {
             </p>
             <p className="flex items-center gap-1.5 text-[11px] font-bold tracking-wide text-emerald-400 uppercase">
               <span className="size-1.5 animate-pulse rounded-full bg-emerald-400" />
-              Live
+              Simulated
             </p>
           </div>
 
@@ -106,7 +106,7 @@ export function HeroCard({ market }: HeroCardProps) {
             <HeroStat
               icon={<Users className="size-[18px]" />}
               value={market.traders.toLocaleString("en-IN")}
-              label="Traders"
+              label="Participants"
             />
             <span className="h-8 w-px bg-white/10" />
             <HeroStat

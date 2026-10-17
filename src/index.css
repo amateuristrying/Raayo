@@ -93,3 +93,56 @@ body {
 ::selection {
   @apply bg-brand-100 text-brand-800;
 }
+
+/* Shared route layouts keep their content usable as the rails collapse. */
+.app-content { overflow-wrap: anywhere; }
+.app-content h1, .app-content h2, .app-content h3 { letter-spacing: 0; }
+.app-content main { min-width: 0; }
+:focus-visible { outline: 2px solid #6a52d4; outline-offset: 3px; }
+@media (max-width: 1600px) {
+  .app-content .grid-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .app-content .grid-cols-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 1280px) {
+  .app-content > div { flex-direction: column; }
+  .app-content main, .app-content .anim-rail { width: 100%; }
+  .app-content .anim-rail { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .navbar-logo { width: auto; }
+  .navbar-inner { gap: 16px; }
+}
+@media (max-width: 1000px) {
+  .anim-sidebar { display: none; }
+  .mobile-menu-button { display: block; }
+  .navbar-logo { margin-right: auto; }
+  .navbar-create { display: none; }
+}
+@media (min-width: 1001px) {
+  .mobile-navigation { display: none; }
+}
+@media (max-width: 700px) {
+  .navbar-inner { padding: 0 12px; gap: 8px; }
+  .navbar-search, .profile-name { display: none; }
+  .app-content > div { padding-left: 16px; padding-right: 16px; }
+  .app-content main > .grid, .app-content main > section > .grid,
+  .app-content .anim-hero > .grid, .app-content .anim-rise.grid,
+  .app-content .anim-rail { grid-template-columns: minmax(0, 1fr); }
+  .app-content .anim-hero { padding: 20px; }
+  .app-content .anim-hero h1 { font-size: 28px; }
+  .app-content .page-heading { align-items: flex-start; gap: 20px; }
+  .app-content .page-heading > div { max-width: 100%; }
+  .app-content .page-heading h1 { font-size: 28px; }
+  .app-content main > .grid > .border-l, .app-content .anim-rise.grid > .border-l { border-left: 0; padding-left: 0; }
+  .app-content .grid-cols-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .app-content table { min-width: 600px; }
+  .app-content .anim-hero .mt-6 { flex-wrap: wrap; gap: 12px; }
+  .position-row { flex-wrap: wrap; }
+  .app-content .col-span-3 { grid-column: 1 / -1; }
+  .position-row > div:first-of-type { flex-basis: calc(100% - 64px); }
+  .market-row { flex-wrap: wrap; gap: 12px; }
+  .market-row > div:first-of-type { flex-basis: calc(100% - 64px); }
+  .market-row h3 { white-space: normal; }
+  .market-row > div:nth-of-type(4), .market-row > div:nth-of-type(5) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

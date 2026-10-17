@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { EmojiTile } from "@/components/ui/EmojiTile";
@@ -10,9 +11,11 @@ interface ExploreGraphProps {
 }
 
 function GraphNodeView({ node }: { node: GraphNode }) {
+  const navigate = useNavigate();
   return (
     <button
       type="button"
+      onClick={() => navigate(`/search?${new URLSearchParams({ q: node.name })}`)}
       className="group flex w-28 shrink-0 cursor-pointer flex-col items-center gap-2 text-center"
     >
       <EmojiTile
@@ -51,7 +54,7 @@ export function ExploreGraph({ nodes }: ExploreGraphProps) {
         subtitle="How people, events and organizations connect"
         className="mb-3.5"
       />
-      <Card className="flex items-start px-6 py-5">
+      <Card className="flex items-start overflow-x-auto px-6 py-5">
         {nodes.map((node, index) => (
           <Fragment key={node.id}>
             {index > 0 && <Connector />}

@@ -126,7 +126,8 @@ const params = {
 
 // ─── Scene setup ────────────────────────────────────────────────────────────
 
-const renderer = new THREE.WebGPURenderer({ antialias: true })
+const renderer = new THREE.WebGPURenderer({ antialias: true, alpha: true })
+renderer.setClearColor('#ffffff', 0)
 renderer.toneMapping = THREE.AgXToneMapping
 renderer.toneMappingExposure = 1.0
 renderer.shadowMap.enabled = params.shadows
@@ -149,6 +150,12 @@ stats.init(renderer)
 
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(params.backgroundColor)
+const applyPageTheme = () => {
+  // A transparent clear preserves true CSS white without tone-mapping the sky.
+  scene.background = document.documentElement.dataset.theme === 'dark' ? new THREE.Color(params.backgroundColor) : null
+}
+applyPageTheme()
+window.addEventListener('raayo:theme', applyPageTheme)
 
 const camera = new THREE.PerspectiveCamera(params.fov, window.innerWidth / window.innerHeight, 0.01, 100)
 camera.position.set(-5.5, 2.2, 6.7)
@@ -806,7 +813,7 @@ envFolder
   .addColor(params, 'backgroundColor')
   .name('Background')
   .onChange((value) => {
-    scene.background.set(value)
+    if (scene.background) scene.background.set(value)
   })
 
 const simFolder = gui.addFolder('Simulation')

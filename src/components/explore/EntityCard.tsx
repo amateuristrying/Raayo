@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/cn";
 import { accentGradients } from "@/lib/accents";
 import { Card } from "@/components/ui/Card";
@@ -10,9 +11,11 @@ interface EntityCardProps {
 
 /** Image-led entity tile used in the "Browse by Entity" carousel. */
 export const EntityCard = memo(function EntityCard({ entity }: EntityCardProps) {
+  const navigate = useNavigate();
   return (
     <Card
       hoverable
+      onClick={() => navigate(`/search?${new URLSearchParams({ q: entity.name, type: "Entity" })}`)}
       className="anim-item w-44 shrink-0 cursor-pointer overflow-hidden"
     >
       <div

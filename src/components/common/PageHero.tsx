@@ -61,7 +61,7 @@ export function PageHero({
   wideSubtitle = false,
 }: PageHeroProps) {
   return (
-    <section className="flex items-start justify-between gap-6">
+    <section className="page-heading flex flex-wrap items-start justify-between gap-6">
       <div className="anim-hero">
         <h1 className="text-4xl font-bold tracking-tight text-brand-800">
           {title}
@@ -75,11 +75,11 @@ export function PageHero({
           {subtitle}
         </p>
       </div>
-      <Card className="anim-hero flex items-center gap-6 px-5 py-4">
+      {metrics.length > 0 && <Card className="anim-hero flex flex-wrap items-center gap-6 px-5 py-4">
         {metrics.map((metric) => (
           <MetricCard key={metric.id} metric={metric} />
         ))}
-      </Card>
+      </Card>}
     </section>
   );
 }

@@ -22,7 +22,7 @@ export const ProbabilityCard = memo(function ProbabilityCard({
 }: ProbabilityCardProps) {
   const tone = toneStyles[bucket.tone];
   return (
-    <Card hoverable className="anim-item cursor-pointer p-4">
+    <Card className="anim-item p-4">
       <p className={cn("text-lg leading-tight font-bold", tone.text)}>
         {bucket.range}
       </p>

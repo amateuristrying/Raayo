@@ -6,7 +6,7 @@ import {
   trendingMarkets,
 } from "@/data";
 import type { MarketIcon } from "@/types";
-import { clusterMarketId } from "./markets";
+import { clusterMarketId, marketsStore } from "./markets";
 
 /*
  * Search engine (client-side stand-in). Builds an in-memory index over every
@@ -95,10 +95,52 @@ function buildIndex(): SearchResult[] {
     });
   }
 
-  return index;
+  for (const event of eventsPageData.rail.mostFollowed) {
+    index.push({
+      id: `event-${event.id}`,
+      type: "Event",
+      title: event.title,
+      subtitle: `${event.markets} markets`,
+      emoji: event.emoji,
+    });
+  }
+  for (const entity of exploreData.rail.recommendedEntities) {
+    index.push({
+      id: `entity-${entity.id}`,
+      type: "Entity",
+      title: entity.name,
+      subtitle: `${entity.markets} markets`,
+      emoji: entity.emoji,
+    });
+  }
+  return index.filter(
+    (item, position) =>
+      index.findIndex(
+        (other) => other.id === item.id && other.type === item.type,
+      ) === position,
+  );
 }
 
 const searchIndex = buildIndex();
+
+export function browseAll(): SearchResult[] {
+  const nonMarkets = searchIndex.filter((item) => item.type !== "Market");
+  return [
+    ...Object.values(marketsStore.get()).map((market): SearchResult => ({
+      id: market.id,
+      type: "Market",
+      title: market.title,
+      subtitle: market.category ?? "Prediction market",
+      emoji: "",
+      probability: market.probability,
+    })),
+    ...nonMarkets,
+  ];
+}
+
+export function followKey(result: SearchResult): string {
+  return result.id.replace(/^(event|entity|category)-/, "");
+}
 
 function score(result: SearchResult, query: string): number {
   const title = result.title.toLowerCase();
@@ -111,7 +153,7 @@ function score(result: SearchResult, query: string): number {
 export function searchAll(rawQuery: string, limit = 8): SearchResult[] {
   const query = rawQuery.trim().toLowerCase();
   if (!query) return [];
-  return searchIndex
+  return browseAll()
     .map((result) => ({ result, rank: score(result, query) }))
     .filter((entry) => entry.rank > 0)
     .sort((a, b) => b.rank - a.rank)

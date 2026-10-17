@@ -1,4 +1,3 @@
-import { ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { eventClusters } from "@/data";
@@ -32,13 +31,6 @@ export function EventClustersSection({
           No event clusters in this category yet.
         </Card>
       )}
-      <button
-        type="button"
-        aria-label="Scroll event clusters"
-        className="absolute top-[55%] -right-3 flex size-9 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-float transition-all hover:-translate-y-px hover:text-brand-700"
-      >
-        <ChevronRight className="size-4" />
-      </button>
     </section>
   );
 }

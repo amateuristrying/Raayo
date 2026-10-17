@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/cn";
 import { accentGradients } from "@/lib/accents";
 import { Card } from "@/components/ui/Card";
@@ -78,13 +79,13 @@ export function EventClusterCard({ cluster }: EventClusterCardProps) {
           })}
         </ul>
         <div className="border-t border-slate-100 pt-3">
-          <button
-            type="button"
+          <Link
+            to={`/search?${new URLSearchParams({ q: cluster.title, type: "Event" })}`}
             className="group flex cursor-pointer items-center gap-1.5 text-[13px] font-semibold text-brand-600 transition-colors hover:text-brand-800"
           >
-            View all {cluster.activeMarkets} markets
+            Explore event
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-          </button>
+          </Link>
         </div>
       </div>
     </Card>

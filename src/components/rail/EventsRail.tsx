@@ -119,7 +119,7 @@ export function EventsRail() {
       <TodaysCalendarCard entries={rail.calendar} />
       <RecentlyAddedCard items={rail.recentlyAdded} />
       <MostFollowedCard items={rail.mostFollowed} />
-      <AskRaayo prompts={rail.aiPrompts} />
+      <AskRaayo />
     </aside>
   );
 }

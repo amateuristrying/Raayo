@@ -1,4 +1,3 @@
-import { ChevronRight } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import type { FeaturedCategory } from "@/types";
 import { FeaturedCategoryCard } from "./FeaturedCategoryCard";
@@ -22,13 +21,6 @@ export function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
           <FeaturedCategoryCard key={category.id} category={category} />
         ))}
       </div>
-      <button
-        type="button"
-        aria-label="Scroll featured categories"
-        className="absolute top-1/2 -right-3 flex size-9 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-float transition-all hover:-translate-y-px hover:text-brand-700"
-      >
-        <ChevronRight className="size-4" />
-      </button>
     </section>
   );
 }

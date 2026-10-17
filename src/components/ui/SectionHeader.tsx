@@ -38,7 +38,7 @@ export function SectionHeader({
         {leading}
         <h2 className={titleClasses[variant]}>{title}</h2>
         {meta && <span className="text-[11px] text-slate-400">{meta}</span>}
-        {actionLabel && (
+        {actionLabel && onAction && (
           <button
             type="button"
             onClick={onAction}

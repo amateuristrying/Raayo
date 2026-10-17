@@ -30,3 +30,10 @@ If you are developing a production application, we recommend enabling type-aware
 ```
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+
+## Verification
+
+Run `npm run build` and `npm run test:ui`. Browser tests use an installed Google
+Chrome and start the local Vite server on port 5178 when needed. Hero rendering
+requires WebGPU support. See `CHANGELOG.md` for this update and `BACKEND_PLAN.md`
+for the current backend assessment and proposed delivery sequence.

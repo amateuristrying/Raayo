@@ -27,13 +27,12 @@ export function ExplorePage() {
       <main className="flex min-w-0 flex-1 flex-col gap-6">
         <PageHero
           title="Explore"
-          subtitle="Discover people, events and predictions shaping India's future."
+          subtitle="Follow the connections. Find the people, events and questions shaping India's next chapter."
           metrics={exploreData.metrics}
         />
 
         <DiscoveryCard
           searches={exploreData.trendingSearches}
-          prompts={exploreData.aiPrompts}
         />
 
         <div className="anim-rise">

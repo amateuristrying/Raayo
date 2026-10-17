@@ -1,6 +1,5 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { PageHero } from "@/components/common/PageHero";
-import { BrowseByMonth } from "@/components/events/BrowseByMonth";
 import { EventFilters } from "@/components/events/EventFilters";
 import { EventHeatmap } from "@/components/events/EventHeatmap";
 import { EventsTimeline } from "@/components/events/EventsTimeline";
@@ -14,6 +13,23 @@ import { eventsPageData } from "@/data";
 export function EventsPage() {
   const rootRef = useRef<HTMLDivElement>(null);
   usePageReveal(rootRef);
+  const [status, setStatus] = useState("all");
+  const [category, setCategory] = useState("all");
+  const categoryTypes: Record<string, string[]> = {
+    sports: ["International Cricket"],
+    finance: ["Monetary Policy"],
+    govt: ["Monetary Policy", "Election"],
+    movies: ["Film Release"],
+    entertainment: ["Film Release"],
+    politics: ["Election"],
+  };
+  const filtered = eventsPageData.featured.filter(
+    (event) =>
+      (status === "all" ||
+        (event.badge.live ? "live" : "upcoming") === status) &&
+      (category === "all" ||
+        categoryTypes[category]?.includes(event.type.label)),
+  );
 
   return (
     <div
@@ -23,7 +39,7 @@ export function EventsPage() {
       <main className="flex min-w-0 flex-1 flex-col gap-6">
         <PageHero
           title="Events"
-          subtitle="Every real-world event shaping India's future."
+          subtitle="The context behind the probability. Follow the moments that move India's collective outlook."
           metrics={eventsPageData.metrics}
         />
 
@@ -32,14 +48,38 @@ export function EventsPage() {
         <EventFilters
           statusFilters={eventsPageData.statusFilters}
           categoryFilters={eventsPageData.categoryFilters}
+          activeStatus={status}
+          activeCategory={category}
+          onStatus={setStatus}
+          onCategory={setCategory}
         />
 
-        <FeaturedEvents events={eventsPageData.featured} />
+        <p className="text-sm text-slate-500" role="status">
+          {filtered.length} featured{" "}
+          {filtered.length === 1 ? "event" : "events"} match your filters
+        </p>
+        {filtered.length > 0 ? (
+          <FeaturedEvents events={filtered} />
+        ) : (
+          <div className="border-y border-slate-200 py-10 text-center">
+            <p className="text-slate-600">
+              No featured events in this selection.
+            </p>
+            <button
+              className="mt-3 text-sm font-semibold text-brand-700"
+              onClick={() => {
+                setStatus("all");
+                setCategory("all");
+              }}
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
         <LiveNowStrip items={eventsPageData.liveNow} />
         <StartingSoon items={eventsPageData.startingSoon} />
 
-        <div className="grid grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-start gap-6">
-          <BrowseByMonth months={eventsPageData.months} />
+        <div className="grid items-start gap-6">
           <EventHeatmap heatmap={eventsPageData.heatmap} />
         </div>
       </main>

@@ -15,7 +15,7 @@ const CountdownCard = memo(function CountdownCard({
   item: CountdownEventData;
 }) {
   return (
-    <Card hoverable className="anim-item cursor-pointer p-4">
+    <Card className="anim-item p-4">
       <div className="flex items-center gap-2.5">
         <span className="flex shrink-0">
           {item.tiles.map((tile, index) => (

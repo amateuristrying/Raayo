@@ -56,7 +56,7 @@ export function TrendingMarketRow({ market }: TrendingMarketRowProps) {
   return (
     <Card
       hoverable
-      className="flex cursor-pointer items-center gap-5 py-3.5 pr-3 pl-4"
+      className="market-row flex cursor-pointer items-center gap-5 py-3.5 pr-3 pl-4"
       onClick={openTradeModal}
     >
       <span

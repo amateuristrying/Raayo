@@ -1,11 +1,14 @@
-import { useState, type ReactNode } from "react";
-import { Calendar, ChevronDown } from "lucide-react";
+import { type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import type { Accent, EventCategoryFilter, EventStatusFilter } from "@/types";
 
 interface EventFiltersProps {
   statusFilters: EventStatusFilter[];
   categoryFilters: EventCategoryFilter[];
+  activeStatus: string;
+  activeCategory: string;
+  onStatus: (value: string) => void;
+  onCategory: (value: string) => void;
 }
 
 const dotClasses: Record<Accent, string> = {
@@ -27,7 +30,13 @@ interface FilterPillProps {
   onClick?: () => void;
 }
 
-function FilterPill({ label, active, leading, trailing, onClick }: FilterPillProps) {
+function FilterPill({
+  label,
+  active,
+  leading,
+  trailing,
+  onClick,
+}: FilterPillProps) {
   return (
     <button
       type="button"
@@ -56,21 +65,26 @@ function GroupLabel({ children }: { children: ReactNode }) {
 }
 
 /** Status + category filter pills with the calendar-view toggle. */
-export function EventFilters({ statusFilters, categoryFilters }: EventFiltersProps) {
-  const [activeStatus, setActiveStatus] = useState("all");
-
+export function EventFilters({
+  statusFilters,
+  categoryFilters,
+  activeStatus,
+  activeCategory,
+  onStatus,
+  onCategory,
+}: EventFiltersProps) {
   return (
     <div className="anim-rise flex items-start justify-between gap-4">
       <div className="flex flex-wrap items-start gap-x-8 gap-y-3">
         <div>
           <GroupLabel>Status</GroupLabel>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {statusFilters.map((filter) => (
               <FilterPill
                 key={filter.id}
                 label={filter.label}
                 active={filter.id === activeStatus}
-                onClick={() => setActiveStatus(filter.id)}
+                onClick={() => onStatus(filter.id)}
                 leading={
                   filter.dot && (
                     <span
@@ -88,26 +102,27 @@ export function EventFilters({ statusFilters, categoryFilters }: EventFiltersPro
         <div>
           <GroupLabel>Category</GroupLabel>
           <div className="flex flex-wrap gap-2">
-            {categoryFilters.map((filter) => (
-              <FilterPill
-                key={filter.id}
-                label={filter.label}
-                leading={filter.emoji && <span aria-hidden>{filter.emoji}</span>}
-                trailing={
-                  filter.more && <ChevronDown className="size-3.5 text-slate-400" />
-                }
-              />
-            ))}
+            <FilterPill
+              label="All subjects"
+              active={activeCategory === "all"}
+              onClick={() => onCategory("all")}
+            />
+            {categoryFilters
+              .filter((filter) => !filter.more)
+              .map((filter) => (
+                <FilterPill
+                  key={filter.id}
+                  label={filter.label}
+                  active={filter.id === activeCategory}
+                  onClick={() => onCategory(filter.id)}
+                  leading={
+                    filter.emoji && <span aria-hidden>{filter.emoji}</span>
+                  }
+                />
+              ))}
           </div>
         </div>
       </div>
-      <button
-        type="button"
-        className="mt-6 flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-[13px] font-semibold text-slate-700 transition-all hover:-translate-y-px hover:border-brand-200 hover:shadow-card"
-      >
-        <Calendar className="size-4 text-slate-400" />
-        Calendar View
-      </button>
     </div>
   );
 }

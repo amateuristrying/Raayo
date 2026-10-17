@@ -30,6 +30,11 @@ export function CountUp({
   const displayed = useRef(0);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      displayed.current = value;
+      if (ref.current) ref.current.textContent = format(value, grouped, suffix);
+      return;
+    }
     const counter = { current: displayed.current };
     const tween = gsap.to(counter, {
       current: value,

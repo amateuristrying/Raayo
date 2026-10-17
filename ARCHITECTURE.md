@@ -4,12 +4,12 @@ Raayo is an event-first prediction intelligence platform. The core information
 hierarchy is:
 
 ```
-Category → Entity → Event → Market
+Category → Events → Entities → Markets → Predictions
 ```
 
-Every market belongs to an event; every event connects to entities; entities
-and events belong to categories. The frontend is organized around this graph,
-not around isolated prediction questions.
+This is the intended domain model. Current fixtures only partially encode
+these links; `LiveMarket` does not yet require event ownership. See
+`BACKEND_PLAN.md` for the verified implementation gaps and delivery plan.
 
 ## Stack
 
@@ -32,7 +32,7 @@ src/
     home|explore|events|categories/  Page-specific sections
     rail/        Right-sidebar panels per page
   pages/         Route components (Home, Explore, Events, Categories,
-                 Portfolio, Bookmarks)
+                 Portfolio, Search, Watchlist, Bookmarks, Information)
   data/          Mock JSON + typed exports (src/data/index.ts is the single
                  cast boundary)
   engine/        Client-side stand-ins for the backend engines (see below)
@@ -45,8 +45,8 @@ src/
 
 Each module mirrors a future backend engine. Components never touch
 `localStorage` or business rules directly — they call engine functions and
-subscribe via `useStore()`. **To go live, replace the internals of these
-modules with API calls; component code should not need to change.**
+subscribe via `useStore()`. These are synchronous demo stores. API integration
+will also require explicit async states, authorization and server validation.
 
 | Module            | Future engine        | State (persist key)                  |
 | ----------------- | -------------------- | ------------------------------------ |
@@ -61,12 +61,12 @@ modules with API calls; component code should not need to change.**
 | `search.ts`       | Search Engine        | In-memory index over all mock data   |
 | `toasts.ts` / `ui.ts` | —                | Ephemeral UI state (toasts, modals)  |
 
-Key invariants baked in already:
+Current demo behavior:
 
-- **Ledger-based wallet.** The balance is derived from transactions, never set
-  directly. An INR/Razorpay backend maps onto the same shape.
-- **Pricing is a pure function.** `sharePrice()` / `potentialPayout()` in
-  `predictions.ts` are deterministic; swap in LMSR quotes without touching UI.
+- **Local points wallet.** A mutable balance and 30 recent transactions are
+  persisted. This is not an accounting ledger or a real-money payment system.
+- **Illustrative pricing.** `sharePrice()` / `potentialPayout()` use the shown
+  probability. There is no LMSR inventory, cost function or liquidity accounting.
 - **Resolution source is required at market creation.** The create-market flow
   captures an authoritative source (ICC, RBI, ECI…) — the contract the
   Resolution Engine verifies against.

@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/cn";
 import { accentGradients } from "@/lib/accents";
 import { Card } from "@/components/ui/Card";
@@ -31,8 +32,9 @@ function Stat({ value, label }: StatProps) {
 export const FeaturedCategoryCard = memo(function FeaturedCategoryCard({
   category,
 }: FeaturedCategoryCardProps) {
+  const navigate = useNavigate();
   return (
-    <Card hoverable className="anim-item cursor-pointer overflow-hidden">
+    <Card hoverable className="anim-item cursor-pointer overflow-hidden" onClick={() => navigate(`/search?${new URLSearchParams({ q: category.name, type: "Category" })}`)}>
       <div className="relative">
         <div
           className={cn(

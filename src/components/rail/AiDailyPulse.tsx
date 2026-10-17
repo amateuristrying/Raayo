@@ -1,5 +1,4 @@
-import { ArrowRight, Bot, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Bot, Sparkles } from "lucide-react";
 import type { AiPulse } from "@/types";
 import { RailCard } from "./RailCard";
 
@@ -10,13 +9,13 @@ interface AiDailyPulseProps {
 export function AiDailyPulse({ pulse }: AiDailyPulseProps) {
   return (
     <RailCard
-      title="AI Daily Pulse"
+      title="Daily Pulse"
       leading={
         <span className="flex size-7 items-center justify-center rounded-lg bg-brand-700 text-white">
           <Bot className="size-4" />
         </span>
       }
-      meta={`Updated ${pulse.updated}`}
+      meta="Sample editorial briefing"
     >
       <ul className="flex flex-col gap-2.5">
         {pulse.points.map((point) => (
@@ -28,10 +27,6 @@ export function AiDailyPulse({ pulse }: AiDailyPulseProps) {
           </li>
         ))}
       </ul>
-      <Button variant="ghost" size="sm" className="mt-4">
-        Read full pulse
-        <ArrowRight className="size-3.5" />
-      </Button>
     </RailCard>
   );
 }

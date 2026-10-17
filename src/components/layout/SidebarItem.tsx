@@ -6,8 +6,9 @@ import { NotificationBadge } from "@/components/ui/NotificationBadge";
 interface SidebarItemProps {
   icon: LucideIcon;
   label: string;
-  /** Route path; items without one render as inert placeholders. */
+  /** Navigation destination or a command handler. */
   to?: string;
+  onClick?: () => void;
   badge?: number;
 }
 
@@ -36,12 +37,12 @@ function ItemBody({ icon: Icon, label, badge, active }: ItemBodyProps) {
   );
 }
 
-export function SidebarItem({ icon, label, to, badge }: SidebarItemProps) {
+export function SidebarItem({ icon, label, to, badge, onClick }: SidebarItemProps) {
   if (!to) {
     return (
-      <a href="#" className={cn(baseClasses, idleClasses)}>
+      <button type="button" onClick={onClick} className={cn(baseClasses, idleClasses, "text-left")}>
         <ItemBody icon={icon} label={label} badge={badge} active={false} />
-      </a>
+      </button>
     );
   }
 

@@ -16,6 +16,14 @@ export function Card({ hoverable = false, className, ...props }: CardProps) {
         className,
       )}
       {...props}
+      role={props.role ?? (props.onClick ? "button" : undefined)}
+      tabIndex={props.tabIndex ?? (props.onClick ? 0 : undefined)}
+      onKeyDown={props.onKeyDown ?? (props.onClick ? (event) => {
+        if (event.target === event.currentTarget && (event.key === "Enter" || event.key === " ")) {
+          event.preventDefault();
+          event.currentTarget.click();
+        }
+      } : undefined)}
     />
   );
 }

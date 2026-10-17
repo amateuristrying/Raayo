@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/Card";
 import { EmojiTile } from "@/components/ui/EmojiTile";
 import type { CategoryGridItem } from "@/types";
@@ -11,8 +12,9 @@ interface CategoryGridCardProps {
 export const CategoryGridCard = memo(function CategoryGridCard({
   category,
 }: CategoryGridCardProps) {
+  const navigate = useNavigate();
   return (
-    <Card hoverable className="anim-item flex cursor-pointer flex-col p-3.5">
+    <Card hoverable className="anim-item flex cursor-pointer flex-col p-3.5" onClick={() => navigate(`/search?${new URLSearchParams({ q: category.name, type: "Category" })}`)}>
       <div className="flex items-start gap-2.5">
         <EmojiTile
           emoji={category.emoji}
