@@ -22,13 +22,13 @@ import {
   mx_noise_float,
   atomicAdd,
   atomicStore,
-  cos,
 } from 'three/tsl'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js'
 import GUI from 'lil-gui'
 import Stats from 'stats-gl'
 import { FixedTimestep } from './FixedTimestep.js'
+import { colourWavesAt } from './ColourWaves.js'
 import { BallPhysicsGPU } from './BallPhysicsGPU.js'
 import { SphereGridAO } from './SphereGridAO.js'
 
@@ -92,8 +92,6 @@ const params = {
   emissiveIntensity: 2,
   emissiveAoIntensity: 0.4,
   emissiveAoRadius: 1.5,
-  // emissiveSpeed: 0.5,
-  emissiveSpeed: 0.3,
   emissiveScale: 0.15,
   emissiveMin: -0.3,
   // emissiveMax: 0.1,
@@ -498,11 +496,8 @@ const emissiveScaleUniform = uniform(params.emissiveScale)
 const emissivePowerUniform = uniform(params.emissivePower)
 const emissiveAoIntensityUniform = uniform(params.emissiveAoIntensity)
 const emissiveAoRadiusUniform = uniform(params.emissiveAoRadius)
-const emissiveMinUniform = uniform(params.emissiveMin)
-const emissiveMaxUniform = uniform(params.emissiveMax)
-// Start the colour band inside the sphere field, not at its invisible extreme.
-const INITIAL_EMISSIVE_PHASE = Math.PI / 2
-const emissiveTimeUniform = uniform(INITIAL_EMISSIVE_PHASE)
+const initialWaves = colourWavesAt(0, params.emissiveMin, params.emissiveMax)
+const colourWaveUniforms = initialWaves.map((wave) => uniform(new THREE.Vector2(wave.center, wave.strength)))
 
 const bounceIntensityUniform = uniform(params.bounceIntensity)
 const bounceScaleUniform = uniform(params.bounceScale)
@@ -523,13 +518,6 @@ const computeNoiseData = Fn(() => {
   noiseDataBuffer.element(instanceIndex).assign(vec4(nVal, gradX, 0, gradZ))
 })().compute(SPHERE_COUNT)
 
-// Band center oscillates between emissiveMin and emissiveMax in noise-value space
-const bandCenter = cos(emissiveTimeUniform)
-  .mul(0.5)
-  .add(0.5)
-  .mul(emissiveMaxUniform.sub(emissiveMinUniform))
-  .add(emissiveMinUniform)
-
 // Build material nodes for a given remapped index
 function createMaterialNodes(remappedIndex) {
   const instancePos = positionLocal.add(visualPositions.element(remappedIndex))
@@ -537,14 +525,6 @@ function createMaterialNodes(remappedIndex) {
   // Read precomputed noise data
   const noiseData = noiseDataBuffer.element(remappedIndex)
   const noiseVal = noiseData.x
-  const gradDir = vec3(noiseData.y, 0, noiseData.w)
-    .normalize()
-    .mul(sign(bandCenter.sub(noiseVal)))
-
-  // Emissive gradient based on noise value distance from band center
-  const bDistance = abs(noiseVal.sub(bandCenter)).div(emissiveScaleUniform).clamp(0, 1)
-  const gColor = mix(emissiveColor2Uniform, emissiveColor1Uniform, smoothstep(0, 0.5, bDistance))
-  const gAlpha = pow(smoothstep(1.0, 0.7, bDistance), emissivePowerUniform)
 
   // Directional AO using remapped index
   const aoData = ao.aoBuffer.element(remappedIndex)
@@ -554,19 +534,25 @@ function createMaterialNodes(remappedIndex) {
   const aoFacing = normalWorld.dot(occDir.normalize()).mul(0.5).add(0.5).mul(occWeight).mul(ao.intensityUniform)
   const aoNode = float(1.0).sub(aoFacing).clamp(0.0, 1.0)
 
-  // Bounce lighting — direction from precomputed noise gradient
-  const hFactor = pow(normalWorld.dot(gradDir).mul(0.5).add(0.5), bouncePowerUniform)
-  const bDist = abs(noiseVal.sub(bandCenter)).div(bounceScaleUniform).clamp(0, 1)
-  const bProximity = smoothstep(1.0, 0.3, bDist)
-  const bMask = gAlpha.oneMinus()
-  const bounceNode = gColor.mul(bounceIntensityUniform).mul(bProximity).mul(hFactor).mul(bMask).mul(aoNode)
-
   // Remap AO for emissive: radius controls the spread (smoothstep edge), intensity scales the result
   const emissiveAoDarkening = float(1.0).sub(aoNode) // 0 = no occlusion, 1 = fully occluded
   const emissiveAo = float(1.0)
     .sub(smoothstep(0, emissiveAoRadiusUniform, emissiveAoDarkening).mul(emissiveAoIntensityUniform))
     .clamp(0, 1)
-  const emissiveNode = gColor.mul(emissiveIntensityUniform).mul(emissiveAo).mul(gAlpha).add(bounceNode)
+  const waveEmissive = (wave) => {
+    const bandCenter = wave.x
+    const gradDir = vec3(noiseData.y, 0, noiseData.w).normalize().mul(sign(bandCenter.sub(noiseVal)))
+    const bDistance = abs(noiseVal.sub(bandCenter)).div(emissiveScaleUniform).clamp(0, 1)
+    const gColor = mix(emissiveColor2Uniform, emissiveColor1Uniform, smoothstep(0, 0.5, bDistance))
+    const gAlpha = pow(smoothstep(1.0, 0.7, bDistance), emissivePowerUniform)
+    const hFactor = pow(normalWorld.dot(gradDir).mul(0.5).add(0.5), bouncePowerUniform)
+    const bDist = abs(noiseVal.sub(bandCenter)).div(bounceScaleUniform).clamp(0, 1)
+    const bProximity = smoothstep(1.0, 0.3, bDist)
+    const bounceNode = gColor.mul(bounceIntensityUniform).mul(bProximity).mul(hFactor).mul(gAlpha.oneMinus()).mul(aoNode)
+    return gColor.mul(emissiveIntensityUniform).mul(emissiveAo).mul(gAlpha).add(bounceNode).mul(wave.y)
+  }
+  // Max blending keeps the overlapping waves from doubling the brightness.
+  const emissiveNode = waveEmissive(colourWaveUniforms[0]).max(waveEmissive(colourWaveUniforms[1]))
   const aoColorNode = ballColorUniform.mul(aoNode)
 
   return { positionNode: instancePos, colorNode: aoColorNode, emissiveNode }
@@ -885,7 +871,6 @@ emissiveFolder
     emissiveColor2Uniform.value.set(value)
   })
 emissiveFolder.add(params, 'emissiveIntensity', 0, 10, 0.1).name('Intensity')
-emissiveFolder.add(params, 'emissiveSpeed', 0, 5, 0.01).name('Speed')
 emissiveFolder.add(params, 'emissiveScale', 0.1, 5, 0.01).name('Scale')
 emissiveFolder.add(params, 'emissiveMin', -1, 1, 0.01).name('Min')
 emissiveFolder.add(params, 'emissiveMax', 0, 2, 0.01).name('Max')
@@ -955,12 +940,13 @@ await snapVisualPositions()
 // Precompile all materials
 await renderer.compileAsync(scene, camera)
 
-let emissiveTime = INITIAL_EMISSIVE_PHASE
+let colourWaveTime = 0
 let prevTimestamp
 let elapsedTime = 0
+document.addEventListener('visibilitychange', () => { prevTimestamp = undefined })
 renderer.setAnimationLoop(async (timestamp) => {
   // GPU setup and time spent in a background tab must not skip the opening wave.
-  const dt = prevTimestamp === undefined ? 0 : Math.min((timestamp - prevTimestamp) / 1000, 0.1)
+  const dt = prevTimestamp === undefined ? 0 : (timestamp - prevTimestamp) / 1000
   prevTimestamp = timestamp
   elapsedTime += dt
 
@@ -1041,12 +1027,12 @@ renderer.setAnimationLoop(async (timestamp) => {
   emissivePowerUniform.value = params.emissivePower
   emissiveAoIntensityUniform.value = params.emissiveAoIntensity
   emissiveAoRadiusUniform.value = params.emissiveAoRadius
-  emissiveMinUniform.value = params.emissiveMin
-  emissiveMaxUniform.value = params.emissiveMax
   if (!params.emissivePaused) {
-    emissiveTime += dt * params.emissiveSpeed
+    colourWaveTime += dt
   }
-  emissiveTimeUniform.value = emissiveTime
+  colourWavesAt(colourWaveTime, params.emissiveMin, params.emissiveMax).forEach((wave, index) => {
+    colourWaveUniforms[index].value.set(wave.center, wave.strength)
+  })
 
   // Sync bounce lighting uniforms
   bounceIntensityUniform.value = params.bounce ? params.bounceIntensity : 0

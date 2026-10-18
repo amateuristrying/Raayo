@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2 - 2026-10-18
+
+- Launch a colour wave every three seconds; each sweep lasts four seconds.
+- Adjacent waves overlap for one second with soft fades and capped brightness.
+- Preserve the immediate opening wave, dark theme, sphere physics and colours.
+
 ## 1.1.1 - 2026-10-18
 
 - Returned the landing page to dark mode only and removed the sun/moon toggle.

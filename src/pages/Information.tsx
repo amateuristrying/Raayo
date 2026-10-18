@@ -6,7 +6,7 @@ import { usePageReveal } from "@/hooks/usePageReveal";
 const updates = [
   [
     "Colour from the first moment",
-    "The landing page is dark-only, with no theme toggle. The blue and white sphere wave begins as soon as the scene renders, then continues its regular cycle. White footer text floats directly over the spheres.",
+    "The landing page is dark-only, with no theme toggle. The blue and white sphere wave begins immediately. Each sweep lasts four seconds, with a new wave every three seconds and a gentle one-second overlap.",
   ],
   [
     "Find your next question",
@@ -53,7 +53,7 @@ export function InformationPage({ kind }: { kind: "changelog" | "learn" }) {
           }
           subtitle={
             kind === "changelog"
-              ? "Version 1.1.1 · 18 October 2026"
+              ? "Version 1.1.2 · 18 October 2026"
               : "How to explore Raayo and make your first forecast."
           }
           metrics={[]}
