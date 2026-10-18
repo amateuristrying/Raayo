@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RAAYO — Price the Future</title>
-  <script>
-    try { document.documentElement.dataset.theme = localStorage.getItem('raayo:landing-theme') === 'dark' ? 'dark' : 'light'; } catch {}
-  </script>
   <link rel="modulepreload" href="./vendor/three.webgpu.js">
   <link rel="modulepreload" href="./vendor/three.tsl.js">
   <link rel="modulepreload" href="./scene.js">
@@ -686,10 +683,6 @@
     <header class="top-bar">
       <div class="brand-lockup">
         <div class="logo"><a href="/dashboard" target="_top" style="color: inherit; text-decoration: none;">RAAYO</a></div>
-        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
-          <img class="theme-sun" src="./sun.svg" width="22" height="22" alt="">
-          <img class="theme-moon" src="./moon.svg" width="22" height="22" alt="">
-        </button>
       </div>
       <ul class="nav">
         <li><a href="/dashboard" target="_top">Markets</a></li>
@@ -756,7 +749,7 @@
       <div class="bottom-bar">
         <div class="bottom-left">BUILT FOR INDIA. BACKED BY DATA.</div>
         <div class="bottom-center">REAL-TIME MARKETS. COMMUNITY INSIGHTS. TRADE SMART. STAY AHEAD.</div>
-        <div class="bottom-right">VER 1.1.0 | <a href="/changelog" target="_top">CHANGELOG</a></div>
+        <div class="bottom-right">VER 1.1.1 | <a href="/changelog" target="_top">CHANGELOG</a></div>
       </div>
     </div>
   </div>
@@ -912,7 +905,6 @@
     });
   </script>
 
-  <script src="./theme.js"></script>
   <script type="module" src="scene.js"></script>
 
 </body>

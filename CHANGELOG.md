@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.1 - 2026-10-18
+
+- Returned the landing page to dark mode only and removed the sun/moon toggle.
+- Previous saved light-mode preferences no longer affect the landing page.
+- Start the blue/white colour wave on the first rendered frame, without waiting
+  for the lighting fade. The existing wave speed and recurring animation remain.
+- Keep GPU startup time and background-tab pauses from skipping the opening wave.
+- Retain the transparent footer with floating white text.
+
 ## 1.1.0 - 2026-10-18
 
 - Landing page defaults to light mode with a persistent sun/moon switch beside RAAYO.

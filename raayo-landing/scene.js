@@ -126,8 +126,7 @@ const params = {
 
 // ─── Scene setup ────────────────────────────────────────────────────────────
 
-const renderer = new THREE.WebGPURenderer({ antialias: true, alpha: true })
-renderer.setClearColor('#ffffff', 0)
+const renderer = new THREE.WebGPURenderer({ antialias: true })
 renderer.toneMapping = THREE.AgXToneMapping
 renderer.toneMappingExposure = 1.0
 renderer.shadowMap.enabled = params.shadows
@@ -150,12 +149,6 @@ stats.init(renderer)
 
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(params.backgroundColor)
-const applyPageTheme = () => {
-  // A transparent clear preserves true CSS white without tone-mapping the sky.
-  scene.background = document.documentElement.dataset.theme === 'dark' ? new THREE.Color(params.backgroundColor) : null
-}
-applyPageTheme()
-window.addEventListener('raayo:theme', applyPageTheme)
 
 const camera = new THREE.PerspectiveCamera(params.fov, window.innerWidth / window.innerHeight, 0.01, 100)
 camera.position.set(-5.5, 2.2, 6.7)
@@ -507,7 +500,9 @@ const emissiveAoIntensityUniform = uniform(params.emissiveAoIntensity)
 const emissiveAoRadiusUniform = uniform(params.emissiveAoRadius)
 const emissiveMinUniform = uniform(params.emissiveMin)
 const emissiveMaxUniform = uniform(params.emissiveMax)
-const emissiveTimeUniform = uniform(0)
+// Start the colour band inside the sphere field, not at its invisible extreme.
+const INITIAL_EMISSIVE_PHASE = Math.PI / 2
+const emissiveTimeUniform = uniform(INITIAL_EMISSIVE_PHASE)
 
 const bounceIntensityUniform = uniform(params.bounceIntensity)
 const bounceScaleUniform = uniform(params.bounceScale)
@@ -960,11 +955,12 @@ await snapVisualPositions()
 // Precompile all materials
 await renderer.compileAsync(scene, camera)
 
-let emissiveTime = 0
-let prevTimestamp = 0
+let emissiveTime = INITIAL_EMISSIVE_PHASE
+let prevTimestamp
 let elapsedTime = 0
 renderer.setAnimationLoop(async (timestamp) => {
-  const dt = (timestamp - prevTimestamp) / 1000
+  // GPU setup and time spent in a background tab must not skip the opening wave.
+  const dt = prevTimestamp === undefined ? 0 : Math.min((timestamp - prevTimestamp) / 1000, 0.1)
   prevTimestamp = timestamp
   elapsedTime += dt
 
@@ -1047,7 +1043,7 @@ renderer.setAnimationLoop(async (timestamp) => {
   emissiveAoRadiusUniform.value = params.emissiveAoRadius
   emissiveMinUniform.value = params.emissiveMin
   emissiveMaxUniform.value = params.emissiveMax
-  if (!params.emissivePaused && fadeElapsed >= 0) {
+  if (!params.emissivePaused) {
     emissiveTime += dt * params.emissiveSpeed
   }
   emissiveTimeUniform.value = emissiveTime
@@ -1058,6 +1054,7 @@ renderer.setAnimationLoop(async (timestamp) => {
   bouncePowerUniform.value = params.bouncePower
 
   renderer.render(scene, camera)
+  if (!renderer.domElement.dataset.ready) renderer.domElement.dataset.ready = 'true'
 
   stats.update()
   await renderer.resolveTimestampsAsync('render')

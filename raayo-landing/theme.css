@@ -1,18 +1,6 @@
 .brand-lockup { display: flex; align-items: center; gap: 14px; }
-.theme-toggle { display: grid; place-items: center; width: 40px; height: 40px; background: transparent; border: 0; border-radius: 50%; cursor: pointer; pointer-events: auto; transition: background 180ms ease, transform 180ms ease; }
-.theme-toggle:hover { background: rgba(128,128,128,.15); transform: rotate(12deg); }
-.theme-toggle:focus-visible { outline: 2px solid #8b5cf6; outline-offset: 3px; }
-.theme-toggle img { grid-area: 1 / 1; }
-[data-theme="light"] .theme-sun, [data-theme="dark"] .theme-moon { display: none; }
-[data-theme="dark"] .theme-sun { filter: invert(1); }
-html[data-theme="light"], html[data-theme="light"] body { background: #fff; color: #15151d; }
-html[data-theme="light"] .overlay { background: none; }
-html[data-theme="light"] .logo, html[data-theme="light"] .nav li:not(.nav-cta) { color: #15151d; opacity: .85; }
-/* Hero text sits over the unchanged black spheres in either theme. */
-html[data-theme="light"] .hero-word { text-shadow: 0 2px 18px rgba(0,0,0,.8); }
-html[data-theme="light"] .hero-sub, html[data-theme="light"] .metric-label { color: #fff; text-shadow: 0 1px 5px #000; }
-html[data-theme="light"] .bottom-left, html[data-theme="light"] .bottom-center, html[data-theme="light"] .bottom-right, html[data-theme="light"] .bottom-right a { color: #fff; text-shadow: 0 1px 4px #000; }
-html[data-theme="light"] .bottom-bar { background: transparent; }
+.bottom-left, .bottom-center, .bottom-right, .bottom-right a { color: #fff; text-shadow: 0 1px 4px #000; }
+.bottom-bar { background: transparent; }
 .social-panel { display: none; }
 @media (max-width: 700px) {
   .top-bar { padding: 18px 20px !important; }

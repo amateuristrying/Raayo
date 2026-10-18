@@ -120,37 +120,70 @@ test("all sidebar routes fit desktop and mobile", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test("hero starts light, footer floats, theme persists and spheres render", async ({
+test("hero stays dark and shows the opening colour wave on desktop and mobile", async ({
   page,
 }) => {
-  await page.goto("/");
-  const frame = page.frameLocator("iframe");
-  await expect(
-    frame.getByRole("button", { name: "Switch to dark mode" }),
-  ).toBeVisible();
-  await expect(frame.locator(".bottom-bar")).toHaveCSS(
-    "background-color",
-    "rgba(0, 0, 0, 0)",
+  await page.addInitScript(() =>
+    localStorage.setItem("raayo:landing-theme", "light"),
   );
-  await expect(frame.locator(".bottom-left")).toHaveCSS(
-    "color",
-    "rgb(255, 255, 255)",
-  );
-  await expect(frame.locator("body")).toHaveCSS(
-    "background-color",
-    "rgb(255, 255, 255)",
-  );
-  await expect(frame.locator("canvas").first()).toBeVisible({
-    timeout: 60_000,
-  });
-  await page.waitForTimeout(8000);
-  await page.screenshot({ path: "test-results/hero-light.png" });
-  await frame.getByRole("button", { name: "Switch to dark mode" }).click();
-  await expect(
-    frame.getByRole("button", { name: "Switch to light mode" }),
-  ).toBeVisible();
-  await page.reload();
-  await expect(
-    frame.getByRole("button", { name: "Switch to light mode" }),
-  ).toBeVisible();
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/");
+    const frame = page.frameLocator("iframe");
+    await expect(frame.locator("canvas[data-ready=true]")).toBeVisible({
+      timeout: 60_000,
+    });
+    const opening = await page.screenshot({
+      path: `test-results/hero-opening-${width}.png`,
+    });
+    const bluePixels = await page.evaluate(async (base64) => {
+      const image = new Image();
+      image.src = `data:image/png;base64,${base64}`;
+      await image.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const context = canvas.getContext("2d")!;
+      context.drawImage(image, 0, 0);
+      const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
+      let count = 0;
+      // Exclude the header and purple UI; count the blue sphere emissive band.
+      for (
+        let i = canvas.width * Math.floor(canvas.height * 0.25) * 4;
+        i < data.length;
+        i += 4
+      ) {
+        if (
+          data[i] < 110 &&
+          data[i + 2] > 90 &&
+          data[i + 2] > data[i] * 1.5 &&
+          data[i + 2] > data[i + 1] * 1.2
+        )
+          count++;
+      }
+      return count;
+    }, opening.toString("base64"));
+    expect(bluePixels, `Opening colour wave at ${width}px`).toBeGreaterThan(
+      200,
+    );
+    await expect(frame.locator("#theme-toggle")).toHaveCount(0);
+    await expect(frame.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(frame.locator("body")).toHaveCSS(
+      "background-color",
+      "rgb(4, 6, 16)",
+    );
+    await expect(frame.locator(".bottom-bar")).toHaveCSS(
+      "background-color",
+      "rgba(0, 0, 0, 0)",
+    );
+    await expect(frame.locator(".bottom-left")).toHaveCSS(
+      "color",
+      "rgb(255, 255, 255)",
+    );
+    await page.waitForTimeout(5500);
+    const later = await page.screenshot({
+      path: `test-results/hero-later-${width}.png`,
+    });
+    expect(opening.equals(later)).toBe(false);
+  }
 });
